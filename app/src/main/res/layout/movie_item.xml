@@ -3,12 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="300dp">
 
-    <TextView
-        android:id="@+id/tv_movie_name"
+    <ImageView
+        android:id="@+id/iv_movie_poster"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorAccent"
-        android:gravity="center"
-        android:text="MOVIE" />
+        android:gravity="center"/>
 
 </FrameLayout>

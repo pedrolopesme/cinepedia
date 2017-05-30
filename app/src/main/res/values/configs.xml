@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- URLs -->
+    <string name="moviedb_base_url">https://api.themoviedb.org/3/movie/</string>
+
+    <!-- SENSITIVE DATA (DO NOT COMMIT) -->
+    <string name="moviedb_api_key"></string>
+
+</resources>
