@@ -6,18 +6,18 @@ import android.util.Log;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class HttpBaseDao {
+class HttpBaseDao {
 
     private static String LOG_TAG = HttpBaseDao.class.getSimpleName();
-    protected final String baseUrl;
-    protected final String apiKey;
+    private final String baseUrl;
+    private final String apiKey;
 
-    public HttpBaseDao(String baseUrl, String apiKey) {
+    HttpBaseDao(String baseUrl, String apiKey) {
         this.baseUrl = baseUrl;
         this.apiKey = apiKey;
     }
 
-    protected URL buildUrl(String path) {
+    URL buildUrl(String path) {
         try {
             Uri uri = Uri.parse(getBaseUrl())
                     .buildUpon()
@@ -31,11 +31,11 @@ public class HttpBaseDao {
         return null;
     }
 
-    public String getBaseUrl() {
+    String getBaseUrl() {
         return baseUrl;
     }
 
-    public String getApiKey() {
+    String getApiKey() {
         return apiKey;
     }
 }

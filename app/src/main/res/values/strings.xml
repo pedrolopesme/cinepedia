@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Cinepedia</string>
+
+    <!-- MENUS -->
+    <string name="main_menu_popular">Pop Movies</string>
+    <string name="main_menu_rated">Top Rated</string>
+
+    <!-- ERRORS -->
+    <string name="error_conectivity">Ops... your internet seems to be down :-(</string>
+
 </resources>

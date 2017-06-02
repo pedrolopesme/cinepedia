@@ -1,9 +1,11 @@
 package com.pedrolopesme.android.cinepedia.domain;
 
+import java.io.Serializable;
+
 /**
  * Movie Image Paths
  */
-public class MovieImage {
+public class MovieImage implements Serializable {
 
     private static String BASE_PATH = "http://image.tmdb.org/t/p/w";
     private String path;

@@ -2,11 +2,18 @@ package com.pedrolopesme.android.cinepedia.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.pedrolopesme.android.cinepedia.R;
 import com.pedrolopesme.android.cinepedia.adapters.MoviesRecyclerViewAdapter;
@@ -17,12 +24,15 @@ import com.pedrolopesme.android.cinepedia.dao.http.HttpDaoFactory;
 import com.pedrolopesme.android.cinepedia.domain.Movie;
 import com.pedrolopesme.android.cinepedia.domain.Sorting;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MovieItemClickListener {
 
-    private static final int NUM_COLUMNS = 2;
+    // Log tag description
+    private final String logTag = this.getClass().getSimpleName();
+
+    private static final int NUM_COLUMNS_VERTICAL = 2;
+    private static final int NUM_COLUMNS_HORIZONTAL = 3;
     private DaoFactory daoFactory;
 
     // MoviesDao Recycler View
@@ -30,6 +40,15 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
     // MoviesDao Recycler View Adapter
     private MoviesRecyclerViewAdapter mMoviesRecyclerViewAdapter;
+
+    // Layout manager
+    GridLayoutManager layoutManager;
+
+    // Default loading
+    private ProgressBar mLoadingProgressBar;
+
+    // Default Toast
+    Toast mToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,34 +59,86 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         String apiKey = getString(R.string.moviedb_api_key);
         daoFactory = new HttpDaoFactory(baseUrl, apiKey);
 
-        GridLayoutManager layoutManager = new GridLayoutManager(this, NUM_COLUMNS);
+        layoutManager = new GridLayoutManager(this, NUM_COLUMNS_VERTICAL);
         mMoviesRecyclerViewAdapter = new MoviesRecyclerViewAdapter(getApplicationContext(), this);
 
         mMoviesRecyclerView = (RecyclerView) findViewById(R.id.rc_movies);
         mMoviesRecyclerView.setLayoutManager(layoutManager);
         mMoviesRecyclerView.setHasFixedSize(false);
         mMoviesRecyclerView.setAdapter(mMoviesRecyclerViewAdapter);
+
+        mLoadingProgressBar = (ProgressBar) findViewById(R.id.pb_loading_indicator);
+
         refreshMoviesPopular();
+        Log.d(logTag, "Main Activity created successfully!");
     }
 
     @Override
-    public void onMovieItemClick(String movieName) {
-        openMovieDetailActivity(movieName);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        Log.d(logTag, "Main menu inflated successfully!");
+        return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_sort_popular:
+                Log.d(logTag, "Sort popular movies selected");
+                refreshMoviesPopular();
+                return true;
+            case R.id.action_sort_rated:
+                Log.d(logTag, "Sort top rated movies selected");
+                refreshMoviesTopRated();
+                return true;
+            default:
+                Log.w(logTag, "None menu option was identified");
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onMovieItemClick(Movie movie) {
+        openMovieDetailActivity(movie);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        Log.d(logTag, "Orientation changed");
+        super.onConfigurationChanged(newConfig);
+        int numColumns = newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE ? NUM_COLUMNS_HORIZONTAL : NUM_COLUMNS_VERTICAL;
+        layoutManager.setSpanCount(numColumns);
+    }
+
+    /**
+     * Triggers movies async task to get popular movies
+     */
     private void refreshMoviesPopular() {
+        Log.d(logTag, "Refreshing movies grid with popular titles");
+        setTitle(R.string.main_menu_popular);
         new MoviesAsyncTask().execute(Sorting.POPULAR);
     }
 
+    /**
+     * Triggers movies async task to get top rated movies
+     */
     private void refreshMoviesTopRated() {
+        Log.d(logTag, "Refreshing movies grid with top rated");
+        setTitle(R.string.main_menu_rated);
         new MoviesAsyncTask().execute(Sorting.TOP_RATED);
     }
 
+    /**
+     * Pass collected movies to movie's recycler view
+     *
+     * @param movies
+     */
     private void refreshMovies(final List<Movie> movies) {
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mMoviesRecyclerViewAdapter.refresh(movies);
+                Log.d(logTag, "Refreshing recycler view with movies found");
+                mMoviesRecyclerViewAdapter.setMovies(movies);
             }
         });
     }
@@ -75,37 +146,73 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
     /**
      * Open Movie Item Detail
      *
-     * @param movieName
+     * @param movie movie
      */
-    protected void openMovieDetailActivity(String movieName) {
+    protected void openMovieDetailActivity(Movie movie) {
+        Log.d(logTag, "Opening details for movie : " + movie);
         Context context = MainActivity.this;
         Class destination = MovieDetailActivity.class;
         Intent startActivityIntent = new Intent(context, destination);
 
-        startActivityIntent.putExtra(Intent.EXTRA_TEXT, movieName);
+        startActivityIntent.putExtra(Movie.class.getName(), movie);
         startActivity(startActivityIntent);
     }
 
     /**
      * Movies fetcher async task
      */
-    public class MoviesAsyncTask extends AsyncTask<Sorting, Void, Void> {
+    class MoviesAsyncTask extends AsyncTask<Sorting, Void, Boolean> {
 
         private MoviesDao moviesDao = daoFactory.getMoviesDao();
 
         @Override
-        protected Void doInBackground(Sorting... params) {
-            Sorting sorting = params[0];
-            refresh(sorting);
-            return null;
+        protected Boolean doInBackground(Sorting... params) {
+            try {
+                Log.d(logTag, "Refreshing movies");
+                Sorting sorting = params[0];
+                refresh(sorting);
+                return true;
+            } catch (Exception ex) {
+                Log.e(logTag, "Something bad has happend", ex);
+                return false;
+            }
         }
 
+        /**
+         * Get movies according to sorting
+         *
+         * @param sorting
+         */
         private void refresh(Sorting sorting) {
             switch (sorting) {
                 case POPULAR:
+                    Log.d(logTag, "Getting popular movies");
                     refreshMovies(moviesDao.getPopular());
+                    break;
                 case TOP_RATED:
+                    Log.d(logTag, "Getting top rated movies");
                     refreshMovies(moviesDao.getTopRated());
+                    break;
+            }
+        }
+
+        @Override
+        protected void onPreExecute() {
+            Log.d(logTag, "Executing MoviesAsyncTask");
+            mLoadingProgressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            Log.d(logTag, "Finishing MoviesAsyncTask execution");
+            mLoadingProgressBar.setVisibility(View.INVISIBLE);
+            if (!result) {
+                Context context = getApplicationContext();
+                if (mToast != null) {
+                    mToast.cancel();
+                }
+                mToast = Toast.makeText(context, R.string.error_conectivity, Toast.LENGTH_LONG);
+                mToast.show();
             }
         }
     }

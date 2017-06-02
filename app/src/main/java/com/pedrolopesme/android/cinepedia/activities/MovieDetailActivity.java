@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.pedrolopesme.android.cinepedia.R;
+import com.pedrolopesme.android.cinepedia.domain.Movie;
 
 public class MovieDetailActivity extends AppCompatActivity {
 
@@ -17,17 +18,21 @@ public class MovieDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie_detail);
 
         mMovieNameTextView = (TextView) findViewById(R.id.tv_movie_name);
-        String movie = getMovieDetails();
-        if(movie != null){
-            mMovieNameTextView.setText(movie);
+        Movie movie = getMovie();
+        if (movie != null) {
+            mMovieNameTextView.setText(movie.getTitle());
         }
     }
 
-    protected String getMovieDetails(){
+    /**
+     * Extracts selected Movie from intent
+     *
+     * @return Movie movie
+     */
+    protected Movie getMovie() {
         Intent intent = getIntent();
-        if(intent.hasExtra(Intent.EXTRA_TEXT)){
-            String movie = intent.getStringExtra(Intent.EXTRA_TEXT);
-            return movie;
+        if (intent.hasExtra(Movie.class.getName())) {
+            return (Movie) intent.getSerializableExtra(Movie.class.getName());
         }
         return null;
     }

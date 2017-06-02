@@ -1,9 +1,10 @@
 package com.pedrolopesme.android.cinepedia.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class Movie {
+public class Movie implements Serializable {
 
     private int id;
     private MovieImage posterImage;

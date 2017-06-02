@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.pedrolopesme.android.cinepedia.R;
 import com.pedrolopesme.android.cinepedia.clickListeners.MovieItemClickListener;
@@ -23,7 +22,7 @@ import java.util.List;
 public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecyclerViewAdapter.MovieViewHolder> {
 
     // Log tag description
-    String logTag = this.getClass().getSimpleName();
+    private final String logTag = this.getClass().getSimpleName();
 
     // Number of items
     private List<Movie> movies = null;
@@ -32,13 +31,13 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
     private final MovieItemClickListener mOnClickListener;
 
     // Activity Context
-    private Context context;
+    private final Context context;
 
     /**
      * MoviesRecyclerViewAdapter
      *
-     * @param context
-     * @param listener
+     * @param context  Activity Context
+     * @param listener MovieItemClickListener
      */
     public MoviesRecyclerViewAdapter(Context context, MovieItemClickListener listener) {
         this.context = context;
@@ -70,7 +69,7 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
         return movies == null ? 0 : movies.size();
     }
 
-    public void refresh(List<Movie> movies) {
+    public void setMovies(List<Movie> movies) {
         this.movies = movies;
         notifyDataSetChanged();
     }
@@ -78,7 +77,7 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
     /**
      * Caches children views
      */
-    public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         // Log tag description
         String logTag = this.getClass().getSimpleName();
@@ -86,7 +85,7 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
         // Will display movie image
         ImageView mMovieImage;
 
-        public MovieViewHolder(View itemView) {
+        MovieViewHolder(View itemView) {
             super(itemView);
             mMovieImage = (ImageView) itemView.findViewById(R.id.iv_movie_poster);
             itemView.setOnClickListener(this);
@@ -95,12 +94,21 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
 
         @Override
         public void onClick(View v) {
-            mOnClickListener.onMovieItemClick("Some movie clicked " + getAdapterPosition());
-            Log.d(logTag, "View Holder Clicked");
+            if (movies != null) {
+                Movie movie = movies.get(getAdapterPosition());
+                if (movie != null) {
+                    mOnClickListener.onMovieItemClick(movie);
+                    Log.d(logTag, "View Holder Clicked on movie " + movie);
+                }
+            }
         }
 
-        public void bind(Movie movie) {
-            Picasso.with(context).load(movie.getPoster().getSmall()).fit().into(mMovieImage);
+        void bind(Movie movie) {
+            Picasso.with(context)
+                    .load(movie.getPoster().getSmall())
+                    .fit()
+                    .centerCrop()
+                    .into(mMovieImage);
         }
     }
 
