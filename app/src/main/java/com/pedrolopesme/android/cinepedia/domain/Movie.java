@@ -24,7 +24,6 @@ public class Movie implements Parcelable {
     private boolean video;
     private double voteAverage;
 
-
     public int getId() {
         return id;
     }

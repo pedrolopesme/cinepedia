@@ -2,6 +2,8 @@ package com.pedrolopesme.android.cinepedia.parser;
 
 import android.util.Log;
 
+import com.pedrolopesme.android.cinepedia.utils.DateUtil;
+
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
@@ -10,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by pedrolopesme on 28/05/17.
+ * Base Parser with common functions
  */
 
 public class BaseParser {
@@ -22,7 +24,7 @@ public class BaseParser {
             if (json != null && keyName != null) {
                 String val = json.getString(keyName);
                 if (val != null) {
-                    return new SimpleDateFormat("yyyy-MM-dd").parse(val);
+                    return DateUtil.parse(val, "yyyy-MM-dd");
                 }
             }
         } catch (Exception ex) {

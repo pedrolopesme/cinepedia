@@ -7,7 +7,7 @@ import java.net.URL;
 import java.util.Scanner;
 
 /**
- * Network Utility Class
+ * Utility class to handle network operations
  */
 public class NetworkUtil {
 

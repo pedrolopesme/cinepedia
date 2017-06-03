@@ -6,6 +6,9 @@
     <string name="main_menu_rated">Top Rated</string>
 
     <!-- ERRORS -->
-    <string name="error_conectivity">Ops... your internet seems to be down :-(</string>
+    <string name="error_conectivity">Ops, your internet seems to be down :-(</string>
+
+    <!-- TITLES -->
+    <string name="title_moviedetail">MovieDetail</string>
 
 </resources>
