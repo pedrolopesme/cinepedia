@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(logTag, "Creating Main Activity!");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -179,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         }
 
         /**
-         * Get movies according to sorting
+         * Get movies according to the sorting
          *
          * @param sorting
          */

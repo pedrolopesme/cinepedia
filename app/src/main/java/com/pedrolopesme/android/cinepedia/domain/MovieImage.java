@@ -1,11 +1,12 @@
 package com.pedrolopesme.android.cinepedia.domain;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Movie Image Paths
  */
-public class MovieImage implements Serializable {
+public class MovieImage implements Parcelable {
 
     private static String BASE_PATH = "http://image.tmdb.org/t/p/w";
     private String path;
@@ -63,4 +64,32 @@ public class MovieImage implements Serializable {
                 "path='" + path + '\'' +
                 '}';
     }
+
+    // Parcelable garbage
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.path);
+    }
+
+    protected MovieImage(Parcel in) {
+        this.path = in.readString();
+    }
+
+    public static final Parcelable.Creator<MovieImage> CREATOR = new Parcelable.Creator<MovieImage>() {
+        @Override
+        public MovieImage createFromParcel(Parcel source) {
+            return new MovieImage(source);
+        }
+
+        @Override
+        public MovieImage[] newArray(int size) {
+            return new MovieImage[size];
+        }
+    };
 }

@@ -108,7 +108,6 @@ public class MovieDBParser extends BaseParser {
                     if (genre != null) {
                         genres.add(genre);
                     }
-
                 }
                 return genres;
             }

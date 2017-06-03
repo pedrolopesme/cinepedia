@@ -32,7 +32,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     protected Movie getMovie() {
         Intent intent = getIntent();
         if (intent.hasExtra(Movie.class.getName())) {
-            return (Movie) intent.getSerializableExtra(Movie.class.getName());
+            return (Movie) intent.getParcelableExtra(Movie.class.getName());
         }
         return null;
     }
