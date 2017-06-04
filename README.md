@@ -16,7 +16,7 @@ All dependencies are listed at build.gradle.
 
 In order to run this application you'll need to have a 
 [MovieDB API Key](https://www.themoviedb.org/documentation/api). Once you get one,
-you'll need to put it into configs.xml - inside res/values. There's a comment indicating
+you're gonna need to put it into configs.xml - inside res/values. There's a comment indicating
 the right place to insert your key.
 
 ### Screenshots
