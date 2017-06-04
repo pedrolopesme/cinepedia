@@ -1,6 +1,5 @@
 package com.pedrolopesme.android.cinepedia.utils;
 
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
 /**
@@ -9,9 +8,11 @@ import java.text.DecimalFormat;
 public class NumberUtil {
 
     public static String stringfy(Double val) {
-        DecimalFormat df = new DecimalFormat("#.#");
-        df.setRoundingMode(RoundingMode.CEILING);
-        return df.format(val);
+        if (val != null) {
+            DecimalFormat df = new DecimalFormat("#.#");
+            return df.format(val);
+        }
+        return null;
     }
 
 }
