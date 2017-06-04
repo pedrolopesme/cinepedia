@@ -66,7 +66,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     /**
      * Apply movie info into Views
      *
-     * @param movie
+     * @param movie selected
      */
     protected void renderActivity(final Movie movie) {
         if (movie != null) {

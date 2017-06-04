@@ -35,9 +35,6 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
     private static final int NUM_COLUMNS_HORIZONTAL = 3;
     private DaoFactory daoFactory;
 
-    // MoviesDao Recycler View
-    private RecyclerView mMoviesRecyclerView;
-
     // MoviesDao Recycler View Adapter
     private MoviesRecyclerViewAdapter mMoviesRecyclerViewAdapter;
 
@@ -63,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         layoutManager = new GridLayoutManager(this, NUM_COLUMNS_VERTICAL);
         mMoviesRecyclerViewAdapter = new MoviesRecyclerViewAdapter(getApplicationContext(), this);
 
-        mMoviesRecyclerView = (RecyclerView) findViewById(R.id.rc_movies);
+        RecyclerView mMoviesRecyclerView = (RecyclerView) findViewById(R.id.rc_movies);
         mMoviesRecyclerView.setLayoutManager(layoutManager);
         mMoviesRecyclerView.setHasFixedSize(false);
         mMoviesRecyclerView.setAdapter(mMoviesRecyclerViewAdapter);
@@ -83,6 +80,11 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
+        if (item == null) {
+            Log.d(LOG_TAG, "NULL item selected");
+            return super.onOptionsItemSelected(null);
+        }
+
         switch (item.getItemId()) {
             case R.id.action_sort_popular:
                 Log.d(LOG_TAG, "Sort popular movies selected");
@@ -106,10 +108,12 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
     @Override
     public void onConfigurationChanged(final Configuration newConfig) {
-        Log.d(LOG_TAG, "Orientation changed");
-        super.onConfigurationChanged(newConfig);
-        int numColumns = newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE ? NUM_COLUMNS_HORIZONTAL : NUM_COLUMNS_VERTICAL;
-        layoutManager.setSpanCount(numColumns);
+        if (newConfig != null) {
+            Log.d(LOG_TAG, "Orientation changed");
+            super.onConfigurationChanged(newConfig);
+            int numColumns = newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE ? NUM_COLUMNS_HORIZONTAL : NUM_COLUMNS_VERTICAL;
+            layoutManager.setSpanCount(numColumns);
+        }
     }
 
     /**
@@ -133,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
     /**
      * Pass collected movies to movie's recycler view
      *
-     * @param movies
+     * @param movies list
      */
     private void refreshMovies(final List<Movie> movies) {
         this.runOnUiThread(new Runnable() {
@@ -163,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
     /**
      * Movies fetcher async task
      */
-    class MoviesAsyncTask extends AsyncTask<Sorting, Void, Boolean> {
+    private class MoviesAsyncTask extends AsyncTask<Sorting, Void, Boolean> {
 
         private MoviesDao moviesDao = daoFactory.getMoviesDao();
 
@@ -175,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
                 refresh(sorting);
                 return true;
             } catch (Exception ex) {
-                Log.e(LOG_TAG, "Something bad has happend", ex);
+                Log.e(LOG_TAG, "Something bad has happened", ex);
                 return false;
             }
         }
@@ -183,9 +187,14 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         /**
          * Get movies according to the sorting
          *
-         * @param sorting
+         * @param sorting strategy
          */
         private void refresh(final Sorting sorting) {
+            if (sorting == null) {
+                Log.e(LOG_TAG, "Really, needs to refresh using NULL sorter?");
+                return;
+            }
+
             switch (sorting) {
                 case POPULAR:
                     Log.d(LOG_TAG, "Getting popular movies");

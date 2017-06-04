@@ -11,6 +11,7 @@ import java.util.Scanner;
  */
 public class NetworkUtil {
 
+    // Max read timeout
     private static int MAX_READ_TIMEOUT = 3000;
 
     /**

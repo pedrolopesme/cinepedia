@@ -18,21 +18,21 @@ import java.util.List;
 public class MovieDBParser extends BaseParser {
 
     private static String LOG_TAG = MovieDBParser.class.getSimpleName();
-    public static String JSON_ROOT = "results";
-    public static String JSON_ID = "id";
-    public static String JSON_POSTER_PATH = "poster_path";
-    public static String JSON_ADULT = "adult";
-    public static String JSON_OVERVIEW = "overview";
-    public static String JSON_ORIGINAL_TITLE = "original_title";
-    public static String JSON_ORIGINAL_LANGUAGE = "original_language";
-    public static String JSON_TITLE = "title";
-    public static String JSON_BACKDROP = "backdrop_path";
-    public static String JSON_POPULARITY = "popularity";
-    public static String JSON_VOTE_COUNT = "vote_count";
-    public static String JSON_VIDEO = "video";
-    public static String JSON_VOTE_AVG = "vote_average";
-    public static String JSON_GENRE_IDS = "genre_ids";
-    public static String JSON_RELEASE_DATE = "release_date";
+    static String JSON_ROOT = "results";
+    static String JSON_ID = "id";
+    static String JSON_POSTER_PATH = "poster_path";
+    static String JSON_ADULT = "adult";
+    static String JSON_OVERVIEW = "overview";
+    static String JSON_ORIGINAL_TITLE = "original_title";
+    static String JSON_ORIGINAL_LANGUAGE = "original_language";
+    static String JSON_TITLE = "title";
+    static String JSON_BACKDROP = "backdrop_path";
+    static String JSON_POPULARITY = "popularity";
+    static String JSON_VOTE_COUNT = "vote_count";
+    static String JSON_VIDEO = "video";
+    static String JSON_VOTE_AVG = "vote_average";
+    static String JSON_GENRE_IDS = "genre_ids";
+    static String JSON_RELEASE_DATE = "release_date";
 
     /**
      * Parsers a list of movies. Good for popular or top rated API responses.
@@ -67,7 +67,7 @@ public class MovieDBParser extends BaseParser {
      * @param json jsonobject containing a movie
      * @return Movie
      */
-    public static Movie parseMovie(final JSONObject json) {
+     static Movie parseMovie(final JSONObject json) {
         try {
             if (json != null && json.has(JSON_ID)) {
                 int id = json.getInt(JSON_ID);
@@ -114,7 +114,7 @@ public class MovieDBParser extends BaseParser {
      * @param genresJson jsonarray containing a list of genre ids
      * @return List of Integers
      */
-    public static List<Integer> parseGenreIds(final JSONArray genresJson) {
+    static List<Integer> parseGenreIds(final JSONArray genresJson) {
         try {
             if (genresJson != null) {
                 List<Integer> genres = new ArrayList<>();

@@ -13,7 +13,11 @@ import java.util.List;
 class HttpMoviesDao extends HttpBaseDao implements MoviesDao {
 
     private static String LOG_TAG = HttpMoviesDao.class.getSimpleName();
+
+    // Popular url path
     private static String POPULAR_PATH = "popular";
+
+    // Top rated url path
     private static String RATED_PATH = "top_rated";
 
     /**
@@ -22,7 +26,7 @@ class HttpMoviesDao extends HttpBaseDao implements MoviesDao {
      * @param baseUrl url
      * @param apiKey  api key
      */
-    public HttpMoviesDao(final String baseUrl, final String apiKey) {
+    HttpMoviesDao(final String baseUrl, final String apiKey) {
         super(baseUrl, apiKey);
     }
 

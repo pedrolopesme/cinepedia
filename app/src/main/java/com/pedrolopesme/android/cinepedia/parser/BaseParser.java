@@ -6,10 +6,7 @@ import com.pedrolopesme.android.cinepedia.utils.DateUtil;
 
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Base Parser with common functions
@@ -17,7 +14,7 @@ import java.util.List;
 
 abstract class BaseParser {
 
-    public static String LOG_TAG = BaseParser.class.getSimpleName();
+    private static String LOG_TAG = BaseParser.class.getSimpleName();
 
     /**
      * Gets a date string from a JSON object and return its Date object.
@@ -27,7 +24,7 @@ abstract class BaseParser {
      * @param keyName identifier
      * @return date
      */
-    public static Date parseDate(final JSONObject json, final String keyName) {
+     static Date parseDate(final JSONObject json, final String keyName) {
         try {
             if (json != null && keyName != null && json.has(keyName)) {
                 String val = json.getString(keyName);

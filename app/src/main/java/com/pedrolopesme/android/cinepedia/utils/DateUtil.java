@@ -3,6 +3,7 @@ package com.pedrolopesme.android.cinepedia.utils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Utility class to handle date
@@ -15,11 +16,11 @@ public class DateUtil {
      * @param dt     date
      * @param format to apply
      * @return date
-     * @throws ParseException
+     * @throws ParseException error
      */
     public static Date parse(final String dt, final String format) throws ParseException {
         if (dt != null && format != null)
-            return new SimpleDateFormat(format).parse(dt);
+            return new SimpleDateFormat(format, Locale.US).parse(dt);
         return null;
     }
 
@@ -32,7 +33,7 @@ public class DateUtil {
      */
     public static String format(final Date dt, final String format) {
         if (dt != null && format != null)
-            return new SimpleDateFormat(format).format(dt);
+            return new SimpleDateFormat(format, Locale.US).format(dt);
         return null;
     }
 

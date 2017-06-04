@@ -50,9 +50,8 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
         Context context = parent.getContext();
         int movieItemLayoutId = R.layout.movie_item;
         LayoutInflater inflater = LayoutInflater.from(context);
-        boolean shouldAttachImmediatelyToParent = false;
 
-        View view = inflater.inflate(movieItemLayoutId, parent, shouldAttachImmediatelyToParent);
+        View view = inflater.inflate(movieItemLayoutId, parent, false);
         MovieViewHolder viewHolder = new MovieViewHolder(view);
         Log.d(LOG_TAG, "onCreateViewHolder created!");
         return viewHolder;
@@ -108,7 +107,7 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
         /**
          * Renders view poster
          *
-         * @param movie
+         * @param movie selected
          */
         void renderPoster(final Movie movie) {
             Picasso.with(context)
