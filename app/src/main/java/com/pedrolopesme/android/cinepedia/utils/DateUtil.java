@@ -10,7 +10,9 @@ import java.util.Date;
 public class DateUtil {
 
     public static Date parse(String dt, String format) throws ParseException {
-        return new SimpleDateFormat(format).parse(dt);
+        if (dt != null && format != null)
+            return new SimpleDateFormat(format).parse(dt);
+        return null;
     }
 
     public static String format(Date dt, String format) {
