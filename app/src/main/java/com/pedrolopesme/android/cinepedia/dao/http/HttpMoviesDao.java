@@ -22,7 +22,7 @@ class HttpMoviesDao extends HttpBaseDao implements MoviesDao {
      * @param baseUrl url
      * @param apiKey  api key
      */
-    public HttpMoviesDao(String baseUrl, String apiKey) {
+    public HttpMoviesDao(final String baseUrl, final String apiKey) {
         super(baseUrl, apiKey);
     }
 
@@ -34,6 +34,7 @@ class HttpMoviesDao extends HttpBaseDao implements MoviesDao {
     @Override
     public List<Movie> getPopular() {
         try {
+            Log.d(LOG_TAG, "Getting popular movies");
             URL url = buildUrl(POPULAR_PATH);
             String jsonStr = NetworkUtil.getResponseFromHttpUrl(url);
             if (jsonStr != null && !jsonStr.trim().isEmpty()) {
@@ -54,6 +55,7 @@ class HttpMoviesDao extends HttpBaseDao implements MoviesDao {
     @Override
     public List<Movie> getTopRated() {
         try {
+            Log.d(LOG_TAG, "Getting rated movies");
             URL url = buildUrl(RATED_PATH);
             String jsonStr = NetworkUtil.getResponseFromHttpUrl(url);
             if (jsonStr != null && !jsonStr.trim().isEmpty()) {

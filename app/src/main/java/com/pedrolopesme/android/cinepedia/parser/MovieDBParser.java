@@ -40,7 +40,7 @@ public class MovieDBParser extends BaseParser {
      * @param moviesList json string with movies
      * @return List<Movie>
      */
-    public static List<Movie> parseList(String moviesList) {
+    public static List<Movie> parseList(final String moviesList) {
         try {
             List<Movie> movies = new ArrayList<>();
             JSONObject rootJson = new JSONObject(moviesList);
@@ -67,7 +67,7 @@ public class MovieDBParser extends BaseParser {
      * @param json jsonobject containing a movie
      * @return Movie
      */
-    public static Movie parseMovie(JSONObject json) {
+    public static Movie parseMovie(final JSONObject json) {
         try {
             if (json != null && json.has(JSON_ID)) {
                 int id = json.getInt(JSON_ID);
@@ -114,7 +114,7 @@ public class MovieDBParser extends BaseParser {
      * @param genresJson jsonarray containing a list of genre ids
      * @return List of Integers
      */
-    public static List<Integer> parseGenreIds(JSONArray genresJson) {
+    public static List<Integer> parseGenreIds(final JSONArray genresJson) {
         try {
             if (genresJson != null) {
                 List<Integer> genres = new ArrayList<>();

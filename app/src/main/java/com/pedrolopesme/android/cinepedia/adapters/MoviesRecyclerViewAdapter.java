@@ -22,7 +22,7 @@ import java.util.List;
 public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecyclerViewAdapter.MovieViewHolder> {
 
     // Log tag description
-    private final String logTag = this.getClass().getSimpleName();
+    private final static String LOG_TAG = MoviesRecyclerViewAdapter.class.getSimpleName();
 
     // Number of items
     private List<Movie> movies = null;
@@ -39,13 +39,14 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
      * @param context  Activity Context
      * @param listener MovieItemClickListener
      */
-    public MoviesRecyclerViewAdapter(Context context, MovieItemClickListener listener) {
+    public MoviesRecyclerViewAdapter(final Context context, final MovieItemClickListener listener) {
         this.context = context;
         mOnClickListener = listener;
     }
 
     @Override
-    public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MovieViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
+        Log.d(LOG_TAG, "Creating view holder ...");
         Context context = parent.getContext();
         int movieItemLayoutId = R.layout.movie_item;
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -53,15 +54,15 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
 
         View view = inflater.inflate(movieItemLayoutId, parent, shouldAttachImmediatelyToParent);
         MovieViewHolder viewHolder = new MovieViewHolder(view);
-        Log.d(logTag, "MoviesRecyclerViewAdapter onCreateViewHolder executed");
+        Log.d(LOG_TAG, "onCreateViewHolder created!");
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(MovieViewHolder holder, int position) {
+    public void onBindViewHolder(final MovieViewHolder holder, final int position) {
+        Log.d(LOG_TAG, "Executing onBindViewHolder for position #" + position);
         Movie movie = movies.get(position);
-        holder.bind(movie);
-        Log.d(logTag, "MoviesRecyclerViewAdapter onBindViewHolder for position #" + position + " executed");
+        holder.renderPoster(movie);
     }
 
     @Override
@@ -69,7 +70,8 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
         return movies == null ? 0 : movies.size();
     }
 
-    public void setMovies(List<Movie> movies) {
+    public void setMovies(final List<Movie> movies) {
+        Log.d(LOG_TAG, "Refreshing movies list");
         this.movies = movies;
         notifyDataSetChanged();
     }
@@ -85,7 +87,7 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
         // Will display movie image
         ImageView mMovieImage;
 
-        MovieViewHolder(View itemView) {
+        MovieViewHolder(final View itemView) {
             super(itemView);
             mMovieImage = (ImageView) itemView.findViewById(R.id.iv_movie_poster);
             itemView.setOnClickListener(this);
@@ -93,7 +95,7 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
         }
 
         @Override
-        public void onClick(View v) {
+        public void onClick(final View v) {
             if (movies != null) {
                 Movie movie = movies.get(getAdapterPosition());
                 if (movie != null) {
@@ -103,7 +105,12 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
             }
         }
 
-        void bind(Movie movie) {
+        /**
+         * Renders view poster
+         *
+         * @param movie
+         */
+        void renderPoster(final Movie movie) {
             Picasso.with(context)
                     .load(movie.getPoster().getSmall())
                     .fit()

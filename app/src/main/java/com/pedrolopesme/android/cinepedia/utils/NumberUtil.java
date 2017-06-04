@@ -7,7 +7,13 @@ import java.text.DecimalFormat;
  */
 public class NumberUtil {
 
-    public static String stringfy(Double val) {
+    /**
+     * Transforms a double into a String, cropping unnecessary decimals.
+     *
+     * @param val number
+     * @return strign
+     */
+    public static String stringfy(final Double val) {
         if (val != null) {
             DecimalFormat df = new DecimalFormat("#.#");
             return df.format(val);

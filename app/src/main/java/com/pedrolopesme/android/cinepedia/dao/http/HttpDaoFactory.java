@@ -8,7 +8,7 @@ public class HttpDaoFactory implements DaoFactory {
     private final String baseUrl;
     private final String apiKey;
 
-    public HttpDaoFactory(String baseUrl, String apiKey) {
+    public HttpDaoFactory(final String baseUrl, final String apiKey) {
         this.baseUrl = baseUrl;
         this.apiKey = apiKey;
     }

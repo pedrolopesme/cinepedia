@@ -6,5 +6,5 @@ import com.pedrolopesme.android.cinepedia.domain.Movie;
  * Movie Item Click Listener
  */
 public interface MovieItemClickListener {
-    void onMovieItemClick(Movie movie);
+    void onMovieItemClick(final Movie movie);
 }

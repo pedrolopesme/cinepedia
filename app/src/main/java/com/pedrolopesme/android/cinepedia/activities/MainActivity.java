@@ -29,7 +29,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements MovieItemClickListener {
 
     // Log tag description
-    private final String logTag = this.getClass().getSimpleName();
+    private final static String LOG_TAG = MainActivity.class.getSimpleName();
 
     private static final int NUM_COLUMNS_VERTICAL = 2;
     private static final int NUM_COLUMNS_HORIZONTAL = 3;
@@ -51,8 +51,8 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
     Toast mToast;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        Log.d(logTag, "Creating Main Activity!");
+    protected void onCreate(final Bundle savedInstanceState) {
+        Log.d(LOG_TAG, "Creating Main Activity!");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -71,41 +71,42 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         mLoadingProgressBar = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
         refreshMoviesPopular();
-        Log.d(logTag, "Main Activity created successfully!");
+        Log.d(LOG_TAG, "Main Activity created successfully!");
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
-        Log.d(logTag, "Main menu inflated successfully!");
+        Log.d(LOG_TAG, "Main menu inflated successfully!");
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_sort_popular:
-                Log.d(logTag, "Sort popular movies selected");
+                Log.d(LOG_TAG, "Sort popular movies selected");
                 refreshMoviesPopular();
                 return true;
             case R.id.action_sort_rated:
-                Log.d(logTag, "Sort top rated movies selected");
+                Log.d(LOG_TAG, "Sort top rated movies selected");
                 refreshMoviesTopRated();
                 return true;
             default:
-                Log.w(logTag, "None menu option was identified");
+                Log.w(LOG_TAG, "None menu option was identified");
                 return super.onOptionsItemSelected(item);
         }
     }
 
     @Override
-    public void onMovieItemClick(Movie movie) {
+    public void onMovieItemClick(final Movie movie) {
+        Log.d(LOG_TAG, "Movie clicked: " + movie);
         openMovieDetailActivity(movie);
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        Log.d(logTag, "Orientation changed");
+    public void onConfigurationChanged(final Configuration newConfig) {
+        Log.d(LOG_TAG, "Orientation changed");
         super.onConfigurationChanged(newConfig);
         int numColumns = newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE ? NUM_COLUMNS_HORIZONTAL : NUM_COLUMNS_VERTICAL;
         layoutManager.setSpanCount(numColumns);
@@ -115,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
      * Triggers movies async task to get popular movies
      */
     private void refreshMoviesPopular() {
-        Log.d(logTag, "Refreshing movies grid with popular titles");
+        Log.d(LOG_TAG, "Refreshing movies grid with popular titles");
         setTitle(R.string.main_menu_popular);
         new MoviesAsyncTask().execute(Sorting.POPULAR);
     }
@@ -124,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
      * Triggers movies async task to get top rated movies
      */
     private void refreshMoviesTopRated() {
-        Log.d(logTag, "Refreshing movies grid with top rated");
+        Log.d(LOG_TAG, "Refreshing movies grid with top rated");
         setTitle(R.string.main_menu_rated);
         new MoviesAsyncTask().execute(Sorting.TOP_RATED);
     }
@@ -138,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Log.d(logTag, "Refreshing recycler view with movies found");
+                Log.d(LOG_TAG, "Refreshing recycler view with movies found");
                 mMoviesRecyclerViewAdapter.setMovies(movies);
             }
         });
@@ -149,8 +150,8 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
      *
      * @param movie movie
      */
-    protected void openMovieDetailActivity(Movie movie) {
-        Log.d(logTag, "Opening details for movie : " + movie);
+    protected void openMovieDetailActivity(final Movie movie) {
+        Log.d(LOG_TAG, "Opening details for movie : " + movie);
         Context context = MainActivity.this;
         Class destination = MovieDetailActivity.class;
         Intent startActivityIntent = new Intent(context, destination);
@@ -167,14 +168,14 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         private MoviesDao moviesDao = daoFactory.getMoviesDao();
 
         @Override
-        protected Boolean doInBackground(Sorting... params) {
+        protected Boolean doInBackground(final Sorting... params) {
             try {
-                Log.d(logTag, "Refreshing movies");
+                Log.d(LOG_TAG, "Refreshing movies");
                 Sorting sorting = params[0];
                 refresh(sorting);
                 return true;
             } catch (Exception ex) {
-                Log.e(logTag, "Something bad has happend", ex);
+                Log.e(LOG_TAG, "Something bad has happend", ex);
                 return false;
             }
         }
@@ -184,14 +185,14 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
          *
          * @param sorting
          */
-        private void refresh(Sorting sorting) {
+        private void refresh(final Sorting sorting) {
             switch (sorting) {
                 case POPULAR:
-                    Log.d(logTag, "Getting popular movies");
+                    Log.d(LOG_TAG, "Getting popular movies");
                     refreshMovies(moviesDao.getPopular());
                     break;
                 case TOP_RATED:
-                    Log.d(logTag, "Getting top rated movies");
+                    Log.d(LOG_TAG, "Getting top rated movies");
                     refreshMovies(moviesDao.getTopRated());
                     break;
             }
@@ -199,13 +200,13 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
         @Override
         protected void onPreExecute() {
-            Log.d(logTag, "Executing MoviesAsyncTask");
+            Log.d(LOG_TAG, "Executing MoviesAsyncTask");
             mLoadingProgressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
-        protected void onPostExecute(Boolean result) {
-            Log.d(logTag, "Finishing MoviesAsyncTask execution");
+        protected void onPostExecute(final Boolean result) {
+            Log.d(LOG_TAG, "Finishing MoviesAsyncTask execution");
             mLoadingProgressBar.setVisibility(View.INVISIBLE);
             if (!result) {
                 Context context = getApplicationContext();

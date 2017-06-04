@@ -11,6 +11,8 @@ import java.util.Scanner;
  */
 public class NetworkUtil {
 
+    private static int MAX_READ_TIMEOUT = 3000;
+
     /**
      * This method returns the entire result from the HTTP response.
      *
@@ -18,9 +20,10 @@ public class NetworkUtil {
      * @return The contents of the HTTP response.
      * @throws IOException Related to network and stream reading
      */
-    public static String getResponseFromHttpUrl(URL url) throws IOException {
+    public static String getResponseFromHttpUrl(final URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
+            urlConnection.setReadTimeout(MAX_READ_TIMEOUT);
             InputStream in = urlConnection.getInputStream();
 
             Scanner scanner = new Scanner(in);
