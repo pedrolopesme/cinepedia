@@ -2,7 +2,7 @@
   <br>
   <img src="https://raw.githubusercontent.com/pedrolopesme/cinepedia/master/app/src/main/res/mipmap-xhdpi/ic_launcher.png" alt="Cinepedia" width="200">
   <br>
-  Hypermnesia
+  Cinepedia
   <br>
   <br>
 </h1>
