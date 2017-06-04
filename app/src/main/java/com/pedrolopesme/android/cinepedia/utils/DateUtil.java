@@ -9,14 +9,16 @@ import java.util.Date;
  */
 public class DateUtil {
 
-    public static Date parse(String dt, String format) throws ParseException {
+    public static Date parse(final String dt, final String format) throws ParseException {
         if (dt != null && format != null)
             return new SimpleDateFormat(format).parse(dt);
         return null;
     }
 
-    public static String format(Date dt, String format) {
-        return new SimpleDateFormat(format).format(dt);
+    public static String format(final Date dt, final String format) {
+        if (dt != null && format != null)
+            return new SimpleDateFormat(format).format(dt);
+        return null;
     }
 
 }
