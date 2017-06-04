@@ -17,22 +17,22 @@ import java.util.List;
  */
 public class MovieDBParser extends BaseParser {
 
-    private static String LOG_TAG = MovieDBParser.class.getSimpleName();
-    static String JSON_ROOT = "results";
-    static String JSON_ID = "id";
-    static String JSON_POSTER_PATH = "poster_path";
-    static String JSON_ADULT = "adult";
-    static String JSON_OVERVIEW = "overview";
-    static String JSON_ORIGINAL_TITLE = "original_title";
-    static String JSON_ORIGINAL_LANGUAGE = "original_language";
-    static String JSON_TITLE = "title";
-    static String JSON_BACKDROP = "backdrop_path";
-    static String JSON_POPULARITY = "popularity";
-    static String JSON_VOTE_COUNT = "vote_count";
-    static String JSON_VIDEO = "video";
-    static String JSON_VOTE_AVG = "vote_average";
-    static String JSON_GENRE_IDS = "genre_ids";
-    static String JSON_RELEASE_DATE = "release_date";
+    private static final String LOG_TAG = MovieDBParser.class.getSimpleName();
+    static final String JSON_ROOT = "results";
+    static final String JSON_ID = "id";
+    static final String JSON_POSTER_PATH = "poster_path";
+    static final String JSON_ADULT = "adult";
+    static final String JSON_OVERVIEW = "overview";
+    static final String JSON_ORIGINAL_TITLE = "original_title";
+    static final String JSON_ORIGINAL_LANGUAGE = "original_language";
+    static final String JSON_TITLE = "title";
+    static final String JSON_BACKDROP = "backdrop_path";
+    static final String JSON_POPULARITY = "popularity";
+    static final String JSON_VOTE_COUNT = "vote_count";
+    static final String JSON_VIDEO = "video";
+    static final String JSON_VOTE_AVG = "vote_average";
+    static final String JSON_GENRE_IDS = "genre_ids";
+    static final String JSON_RELEASE_DATE = "release_date";
 
     /**
      * Parsers a list of movies. Good for popular or top rated API responses.
@@ -64,7 +64,7 @@ public class MovieDBParser extends BaseParser {
     /**
      * Parse a movie from JSONObject and transforms it in a Movie
      *
-     * @param json jsonobject containing a movie
+     * @param json jsonObject containing a movie
      * @return Movie
      */
      static Movie parseMovie(final JSONObject json) {
@@ -111,7 +111,7 @@ public class MovieDBParser extends BaseParser {
     /**
      * Parses a list of genreIds from jsonArray and transform them in List of integers
      *
-     * @param genresJson jsonarray containing a list of genre ids
+     * @param genresJson jsonArray containing a list of genre ids
      * @return List of Integers
      */
     static List<Integer> parseGenreIds(final JSONArray genresJson) {

@@ -12,7 +12,7 @@ import java.util.Scanner;
 public class NetworkUtil {
 
     // Max read timeout
-    private static int MAX_READ_TIMEOUT = 3000;
+    private static final int MAX_READ_TIMEOUT = 3000;
 
     /**
      * This method returns the entire result from the HTTP response.

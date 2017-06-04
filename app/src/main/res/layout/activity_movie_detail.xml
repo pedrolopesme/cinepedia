@@ -27,9 +27,8 @@
                     android:id="@+id/tv_movie_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_span="3"
                     android:background="@color/colorAccent"
-                    android:gravity="left"
+                    android:gravity="start"
                     android:paddingBottom="30dp"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
@@ -56,6 +55,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:contentDescription="@string/app_name"
                     android:scaleType="centerCrop" />
 
                 <!-- Movie info -->
@@ -71,7 +71,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/colorText"
-                        android:textSize="35dp" />
+                        android:textSize="35sp" />
 
                     <!-- User Ratings -->
                     <TextView
@@ -79,7 +79,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/colorTextDark"
-                        android:textSize="15dp" />
+                        android:textSize="15sp" />
                 </LinearLayout>
             </TableRow>
 
@@ -96,7 +96,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
                     android:background="@drawable/border_bottom"
-                    android:gravity="left"
+                    android:gravity="start"
                     android:paddingBottom="15dp"
                     android:paddingTop="20dp"
                     android:textColor="@color/colorText"

@@ -16,7 +16,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 /**
- * Recycler View Adapater responsible to load new MoviesDao to the
+ * Recycler View Adapter responsible to load new MoviesDao to the
  * main grid
  */
 public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecyclerViewAdapter.MovieViewHolder> {
@@ -81,16 +81,16 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
     class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         // Log tag description
-        String logTag = this.getClass().getSimpleName();
+        final String LOG_TAG = this.getClass().getSimpleName();
 
         // Will display movie image
-        ImageView mMovieImage;
+        final ImageView mMovieImage;
 
         MovieViewHolder(final View itemView) {
             super(itemView);
             mMovieImage = (ImageView) itemView.findViewById(R.id.iv_movie_poster);
             itemView.setOnClickListener(this);
-            Log.d(logTag, "View Holder Created");
+            Log.d(LOG_TAG, "View Holder Created");
         }
 
         @Override
@@ -99,7 +99,7 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
                 Movie movie = movies.get(getAdapterPosition());
                 if (movie != null) {
                     mOnClickListener.onMovieItemClick(movie);
-                    Log.d(logTag, "View Holder Clicked on movie " + movie);
+                    Log.d(LOG_TAG, "View Holder Clicked on movie " + movie);
                 }
             }
         }

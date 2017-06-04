@@ -14,7 +14,7 @@ import java.util.Date;
 
 abstract class BaseParser {
 
-    private static String LOG_TAG = BaseParser.class.getSimpleName();
+    private static final String LOG_TAG = BaseParser.class.getSimpleName();
 
     /**
      * Gets a date string from a JSON object and return its Date object.

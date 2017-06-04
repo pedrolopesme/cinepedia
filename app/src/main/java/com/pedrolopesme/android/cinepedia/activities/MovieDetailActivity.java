@@ -21,19 +21,19 @@ public class MovieDetailActivity extends AppCompatActivity {
     private final static String LOG_TAG = MovieDetailActivity.class.getSimpleName();
 
     // Movie name
-    TextView mMovieNameTextView;
+    private TextView mMovieNameTextView;
 
     // Movie poster
-    ImageView mMoviePosterTextView;
+    private ImageView mMoviePosterTextView;
 
     // Movie release date
-    TextView mMovieReleaseDateTextView;
+    private TextView mMovieReleaseDateTextView;
 
     // Movie rating
-    TextView mMovieRatingTextView;
+    private TextView mMovieRatingTextView;
 
     // Movie Synopsis
-    TextView mMovieSynopsisTextView;
+    private TextView mMovieSynopsisTextView;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -54,7 +54,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     /**
      * Transforms title text and adding back arrow
      */
-    protected void renderTitle() {
+    private void renderTitle() {
         Log.d(LOG_TAG, "Rendering title");
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -68,13 +68,10 @@ public class MovieDetailActivity extends AppCompatActivity {
      *
      * @param movie selected
      */
-    protected void renderActivity(final Movie movie) {
+    private void renderActivity(final Movie movie) {
         if (movie != null) {
             Log.d(LOG_TAG, "Applying movie info on Views");
-            String rating = new StringBuilder()
-                    .append(NumberUtil.stringfy(movie.getVoteAverage()))
-                    .append("/10")
-                    .toString();
+            String rating = NumberUtil.stringify(movie.getVoteAverage()) + "/10";
 
             mMovieNameTextView.setText(movie.getOriginalTitle());
             mMovieReleaseDateTextView.setText(DateUtil.format(movie.getReleaseDate(), "yyyy"));
@@ -98,7 +95,7 @@ public class MovieDetailActivity extends AppCompatActivity {
      *
      * @return Movie movie
      */
-    protected Movie getMovie() {
+    private Movie getMovie() {
         Log.d(LOG_TAG, "Extracting movie from intent");
         Intent intent = getIntent();
         if (intent.hasExtra(Movie.class.getName())) {

@@ -8,17 +8,17 @@ import static junit.framework.Assert.assertNull;
 public class NumberUtilUnitTest {
 
     @Test
-    public void testStringfyNullDouble() throws Exception {
-        assertNull(NumberUtil.stringfy(null));
+    public void testStringifyNullDouble() throws Exception {
+        assertNull(NumberUtil.stringify(null));
     }
 
     @Test
-    public void testStringfyValidDouble() throws Exception {
-        assertEquals("0", NumberUtil.stringfy(0.00));
-        assertEquals("0", NumberUtil.stringfy(0.01));
-        assertEquals("0.1", NumberUtil.stringfy(0.10));
-        assertEquals("1", NumberUtil.stringfy(1.00));
-        assertEquals("1", NumberUtil.stringfy(1.01));
-        assertEquals("1.1", NumberUtil.stringfy(1.11));
+    public void testStringifyValidDouble() throws Exception {
+        assertEquals("0", NumberUtil.stringify(0.00));
+        assertEquals("0", NumberUtil.stringify(0.01));
+        assertEquals("0.1", NumberUtil.stringify(0.10));
+        assertEquals("1", NumberUtil.stringify(1.00));
+        assertEquals("1", NumberUtil.stringify(1.01));
+        assertEquals("1.1", NumberUtil.stringify(1.11));
     }
 }

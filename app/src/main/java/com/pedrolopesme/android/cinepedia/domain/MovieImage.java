@@ -8,14 +8,14 @@ import android.os.Parcelable;
  */
 public class MovieImage implements Parcelable {
 
-    private static String BASE_PATH = "http://image.tmdb.org/t/p/w";
-    private String path;
+    private static final String BASE_PATH = "http://image.tmdb.org/t/p/w";
+    private final String path;
 
     private enum Sizes {
 
         VERY_VERY_SMALL(92), VERY_SMALL(154), SMALL(185), NORMAL(342), BIG(500), BIGGEST(780);
 
-        private Integer size;
+        private final Integer size;
 
         Sizes(int size) {
             this.size = size;
@@ -77,7 +77,7 @@ public class MovieImage implements Parcelable {
         dest.writeString(this.path);
     }
 
-    protected MovieImage(Parcel in) {
+    MovieImage(Parcel in) {
         this.path = in.readString();
     }
 

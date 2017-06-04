@@ -39,13 +39,13 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
     private MoviesRecyclerViewAdapter mMoviesRecyclerViewAdapter;
 
     // Layout manager
-    GridLayoutManager layoutManager;
+    private GridLayoutManager layoutManager;
 
     // Default loading
     private ProgressBar mLoadingProgressBar;
 
     // Default Toast
-    Toast mToast;
+    private Toast mToast;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
      *
      * @param movie movie
      */
-    protected void openMovieDetailActivity(final Movie movie) {
+    private void openMovieDetailActivity(final Movie movie) {
         Log.d(LOG_TAG, "Opening details for movie : " + movie);
         Context context = MainActivity.this;
         Class destination = MovieDetailActivity.class;
@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
      */
     private class MoviesAsyncTask extends AsyncTask<Sorting, Void, Boolean> {
 
-        private MoviesDao moviesDao = daoFactory.getMoviesDao();
+        private final MoviesDao moviesDao = daoFactory.getMoviesDao();
 
         @Override
         protected Boolean doInBackground(final Sorting... params) {

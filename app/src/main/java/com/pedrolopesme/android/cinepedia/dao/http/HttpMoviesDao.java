@@ -12,13 +12,13 @@ import java.util.List;
 
 class HttpMoviesDao extends HttpBaseDao implements MoviesDao {
 
-    private static String LOG_TAG = HttpMoviesDao.class.getSimpleName();
+    private static final String LOG_TAG = HttpMoviesDao.class.getSimpleName();
 
     // Popular url path
-    private static String POPULAR_PATH = "popular";
+    private static final String POPULAR_PATH = "popular";
 
     // Top rated url path
-    private static String RATED_PATH = "top_rated";
+    private static final String RATED_PATH = "top_rated";
 
     /**
      * Http Movies Dao

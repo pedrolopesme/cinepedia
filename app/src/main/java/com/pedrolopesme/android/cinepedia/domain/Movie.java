@@ -195,7 +195,7 @@ public class Movie implements Parcelable {
         this.overview = in.readString();
         long tmpReleaseDate = in.readLong();
         this.releaseDate = tmpReleaseDate == -1 ? null : new Date(tmpReleaseDate);
-        this.genreIds = new ArrayList<Integer>();
+        this.genreIds = new ArrayList<>();
         in.readList(this.genreIds, Integer.class.getClassLoader());
         this.originalTitle = in.readString();
         this.originalLanguage = in.readString();
