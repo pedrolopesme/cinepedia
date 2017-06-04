@@ -4,7 +4,8 @@
     <!-- URLs -->
     <string name="moviedb_base_url">https://api.themoviedb.org/3/movie/</string>
 
-    <!-- SENSITIVE DATA (DO NOT COMMIT) -->
-    <string name="moviedb_api_key"></string>
+    <!-- MOVIEDB API KEY.
+         PS: SENSITIVE DATA, DO NOT COMMIT IT IN A PUBLIC REPO -->
+    <string name="moviedb_api_key">YOUR KEY HERE</string>
 
 </resources>
