@@ -15,13 +15,13 @@ import java.util.List;
  * Base Parser with common functions
  */
 
-public class BaseParser {
+abstract class BaseParser {
 
     public static String LOG_TAG = BaseParser.class.getSimpleName();
 
     public static Date parseDate(JSONObject json, String keyName) {
         try {
-            if (json != null && keyName != null) {
+            if (json != null && keyName != null && json.has(keyName)) {
                 String val = json.getString(keyName);
                 if (val != null) {
                     return DateUtil.parse(val, "yyyy-MM-dd");

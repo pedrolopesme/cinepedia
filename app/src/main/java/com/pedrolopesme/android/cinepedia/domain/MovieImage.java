@@ -11,7 +11,7 @@ public class MovieImage implements Parcelable {
     private static String BASE_PATH = "http://image.tmdb.org/t/p/w";
     private String path;
 
-    public enum Sizes {
+    private enum Sizes {
 
         VERY_VERY_SMALL(92), VERY_SMALL(154), SMALL(185), NORMAL(342), BIG(500), BIGGEST(780);
 
@@ -65,7 +65,7 @@ public class MovieImage implements Parcelable {
                 '}';
     }
 
-    // Parcelable garbage
+    // Parcelable things
 
     @Override
     public int describeContents() {

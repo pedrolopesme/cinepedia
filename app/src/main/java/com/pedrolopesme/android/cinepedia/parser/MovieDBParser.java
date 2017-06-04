@@ -18,6 +18,21 @@ import java.util.List;
 public class MovieDBParser extends BaseParser {
 
     private static String LOG_TAG = MovieDBParser.class.getSimpleName();
+    public static String JSON_ROOT = "results";
+    public static String JSON_ID = "id";
+    public static String JSON_POSTER_PATH = "poster_path";
+    public static String JSON_ADULT = "adult";
+    public static String JSON_OVERVIEW = "overview";
+    public static String JSON_ORIGINAL_TITLE = "original_title";
+    public static String JSON_ORIGINAL_LANGUAGE = "original_language";
+    public static String JSON_TITLE = "title";
+    public static String JSON_BACKDROP = "backdrop_path";
+    public static String JSON_POPULARITY = "popularity";
+    public static String JSON_VOTE_COUNT = "vote_count";
+    public static String JSON_VIDEO = "video";
+    public static String JSON_VOTE_AVG = "vote_average";
+    public static String JSON_GENRE_IDS = "genre_ids";
+    public static String JSON_RELEASE_DATE = "release_date";
 
     /**
      * Parsers a list of movies. Good for popular or top rated API responses.
@@ -29,7 +44,7 @@ public class MovieDBParser extends BaseParser {
         try {
             List<Movie> movies = new ArrayList<>();
             JSONObject rootJson = new JSONObject(moviesList);
-            JSONArray results = rootJson.getJSONArray("results");
+            JSONArray results = rootJson.getJSONArray(JSON_ROOT);
             if (results != null) {
                 for (int c = 0; c < results.length(); c++) {
                     JSONObject movieJson = (JSONObject) results.get(c);
@@ -49,26 +64,26 @@ public class MovieDBParser extends BaseParser {
     /**
      * Parse a movie from JSONObject and transforms it in a Movie
      *
-     * @param movieJson jsonobject containing a movie
+     * @param json jsonobject containing a movie
      * @return Movie
      */
-    public static Movie parseMovie(JSONObject movieJson) {
+    public static Movie parseMovie(JSONObject json) {
         try {
-            if (movieJson != null) {
-                String posterPath = movieJson.getString("poster_path");
-                boolean adult = movieJson.getBoolean("adult");
-                String overview = movieJson.getString("overview");
-                int id = movieJson.getInt("id");
-                String originalTitle = movieJson.getString("original_title");
-                String originalLanguage = movieJson.getString("original_language");
-                String title = movieJson.getString("title");
-                String backdropPath = movieJson.getString("backdrop_path");
-                double popularity = movieJson.getDouble("popularity");
-                int voteCount = movieJson.getInt("vote_count");
-                boolean video = movieJson.getBoolean("video");
-                double vote_average = movieJson.getDouble("vote_average");
-                List<Integer> genreIds = parseGenreIds(movieJson.getJSONArray("genre_ids"));
-                Date releaseDate = parseDate(movieJson, "release_date");
+            if (json != null && json.has(JSON_ID)) {
+                int id = json.getInt(JSON_ID);
+                String posterPath = json.getString(JSON_POSTER_PATH);
+                boolean adult = json.getBoolean(JSON_ADULT);
+                String overview = json.getString(JSON_OVERVIEW);
+                String originalTitle = json.getString(JSON_ORIGINAL_TITLE);
+                String originalLanguage = json.getString(JSON_ORIGINAL_LANGUAGE);
+                String title = json.getString(JSON_TITLE);
+                String backdropPath = json.getString(JSON_BACKDROP);
+                double popularity = json.getDouble(JSON_POPULARITY);
+                int voteCount = json.getInt(JSON_VOTE_COUNT);
+                boolean video = json.getBoolean(JSON_VIDEO);
+                double vote_average = json.getDouble(JSON_VOTE_AVG);
+                List<Integer> genreIds = parseGenreIds(json.getJSONArray(JSON_GENRE_IDS));
+                Date releaseDate = parseDate(json, JSON_RELEASE_DATE);
 
                 Movie movie = new Movie();
                 movie.setAdult(adult);
@@ -88,7 +103,7 @@ public class MovieDBParser extends BaseParser {
                 return movie;
             }
         } catch (Exception ex) {
-            Log.e(LOG_TAG, "It was impossible to parse movie" + movieJson.toString(), ex);
+            Log.e(LOG_TAG, "It was impossible to parse movie" + json.toString(), ex);
         }
         return null;
     }
