@@ -114,6 +114,8 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
                     .load(movie.getPoster().getSmall())
                     .fit()
                     .centerCrop()
+                    .placeholder(R.drawable.ic_placeholder)
+                    .error(R.drawable.ic_error)
                     .into(mMovieImage);
         }
     }

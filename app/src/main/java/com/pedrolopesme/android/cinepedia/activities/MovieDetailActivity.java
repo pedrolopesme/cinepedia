@@ -84,6 +84,8 @@ public class MovieDetailActivity extends AppCompatActivity {
             mMovieSynopsisTextView.setText(movie.getOverview());
             Picasso.with(getApplicationContext())
                     .load(movie.getPoster().getSmall())
+                    .placeholder(R.drawable.ic_placeholder)
+                    .error(R.drawable.ic_error)
                     .into(mMoviePosterTextView);
         }
     }
