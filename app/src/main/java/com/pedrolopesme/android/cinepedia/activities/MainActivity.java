@@ -3,23 +3,20 @@ package com.pedrolopesme.android.cinepedia.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.pedrolopesme.android.cinepedia.R;
 import com.pedrolopesme.android.cinepedia.adapters.MoviesRecyclerViewAdapter;
+import com.pedrolopesme.android.cinepedia.asyncTasks.MoviesAsyncTask;
 import com.pedrolopesme.android.cinepedia.clickListeners.MovieItemClickListener;
 import com.pedrolopesme.android.cinepedia.dao.DaoFactory;
-import com.pedrolopesme.android.cinepedia.dao.MoviesDao;
 import com.pedrolopesme.android.cinepedia.dao.http.HttpDaoFactory;
 import com.pedrolopesme.android.cinepedia.domain.Movie;
 import com.pedrolopesme.android.cinepedia.domain.Sorting;
@@ -29,7 +26,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements MovieItemClickListener {
+public class MainActivity extends MoviesActivity implements MovieItemClickListener {
 
     // Log tag description
     private final static String LOG_TAG = MainActivity.class.getSimpleName();
@@ -123,13 +120,28 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         }
     }
 
+    @Override
+    public ProgressBar getProgressBar() {
+        return mLoadingProgressBar;
+    }
+
+    @Override
+    public Toast getToast() {
+        return mToast;
+    }
+
+    @Override
+    public void setToast(Toast toast) {
+        this.mToast = toast;
+    }
+
     /**
      * Triggers movies async task to get popular movies
      */
     private void refreshMoviesPopular() {
         Log.d(LOG_TAG, "Refreshing movies grid with popular titles");
         setTitle(R.string.main_menu_popular);
-        new MoviesAsyncTask().execute(Sorting.POPULAR);
+        new MoviesAsyncTask(this, daoFactory).execute(Sorting.POPULAR);
     }
 
     /**
@@ -138,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
     private void refreshMoviesTopRated() {
         Log.d(LOG_TAG, "Refreshing movies grid with top rated");
         setTitle(R.string.main_menu_rated);
-        new MoviesAsyncTask().execute(Sorting.TOP_RATED);
+        new MoviesAsyncTask(this, daoFactory).execute(Sorting.TOP_RATED);
     }
 
     /**
@@ -146,7 +158,8 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
      *
      * @param movies list
      */
-    private void refreshMovies(final List<Movie> movies) {
+    @Override
+    public void refreshMovies(final List<Movie> movies) {
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -171,67 +184,5 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         startActivity(startActivityIntent);
     }
 
-    /**
-     * Movies fetcher async task
-     */
-    private class MoviesAsyncTask extends AsyncTask<Sorting, Void, Boolean> {
 
-        private final MoviesDao moviesDao = daoFactory.getMoviesDao();
-
-        @Override
-        protected Boolean doInBackground(final Sorting... params) {
-            try {
-                Log.d(LOG_TAG, "Refreshing movies");
-                Sorting sorting = params[0];
-                refresh(sorting);
-                return true;
-            } catch (Exception ex) {
-                Log.e(LOG_TAG, "Something bad has happened", ex);
-                return false;
-            }
-        }
-
-        /**
-         * Get movies according to the sorting
-         *
-         * @param sorting strategy
-         */
-        private void refresh(final Sorting sorting) {
-            if (sorting == null) {
-                Log.e(LOG_TAG, "Really, needs to refresh using NULL sorter?");
-                return;
-            }
-
-            switch (sorting) {
-                case POPULAR:
-                    Log.d(LOG_TAG, "Getting popular movies");
-                    refreshMovies(moviesDao.getPopular());
-                    break;
-                case TOP_RATED:
-                    Log.d(LOG_TAG, "Getting top rated movies");
-                    refreshMovies(moviesDao.getTopRated());
-                    break;
-            }
-        }
-
-        @Override
-        protected void onPreExecute() {
-            Log.d(LOG_TAG, "Executing MoviesAsyncTask");
-            mLoadingProgressBar.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean result) {
-            Log.d(LOG_TAG, "Finishing MoviesAsyncTask execution");
-            mLoadingProgressBar.setVisibility(View.INVISIBLE);
-            if (!result) {
-                Context context = getApplicationContext();
-                if (mToast != null) {
-                    mToast.cancel();
-                }
-                mToast = Toast.makeText(context, R.string.error_conectivity, Toast.LENGTH_LONG);
-                mToast.show();
-            }
-        }
-    }
 }
