@@ -15,25 +15,33 @@ import com.pedrolopesme.android.cinepedia.utils.DateUtil;
 import com.pedrolopesme.android.cinepedia.utils.NumberUtil;
 import com.squareup.picasso.Picasso;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MovieDetailActivity extends AppCompatActivity {
 
     // Log tag description
     private final static String LOG_TAG = MovieDetailActivity.class.getSimpleName();
 
     // Movie name
-    private TextView mMovieNameTextView;
+    @BindView(R.id.tv_movie_name)
+    TextView mMovieNameTextView;
 
     // Movie poster
-    private ImageView mMoviePosterTextView;
+    @BindView(R.id.iv_movie_poster)
+    ImageView mMoviePosterTextView;
 
     // Movie release date
-    private TextView mMovieReleaseDateTextView;
+    @BindView(R.id.tv_release_date)
+    TextView mMovieReleaseDateTextView;
 
     // Movie rating
-    private TextView mMovieRatingTextView;
+    @BindView(R.id.tv_ratings)
+    TextView mMovieRatingTextView;
 
     // Movie Synopsis
-    private TextView mMovieSynopsisTextView;
+    @BindView(R.id.tv_movie_synopsis)
+    TextView mMovieSynopsisTextView;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -42,12 +50,9 @@ public class MovieDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie_detail);
         renderTitle();
 
+        ButterKnife.bind(this);
+
         Movie movie = getMovie();
-        mMovieNameTextView = (TextView) findViewById(R.id.tv_movie_name);
-        mMoviePosterTextView = (ImageView) findViewById(R.id.iv_movie_poster);
-        mMovieReleaseDateTextView = (TextView) findViewById(R.id.tv_release_date);
-        mMovieRatingTextView = (TextView) findViewById(R.id.tv_ratings);
-        mMovieSynopsisTextView = (TextView) findViewById(R.id.tv_movie_synopsis);
         renderActivity(movie);
     }
 

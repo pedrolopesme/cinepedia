@@ -26,13 +26,19 @@ import com.pedrolopesme.android.cinepedia.domain.Sorting;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity implements MovieItemClickListener {
 
     // Log tag description
     private final static String LOG_TAG = MainActivity.class.getSimpleName();
 
+    // Grid configs
     private static final int NUM_COLUMNS_VERTICAL = 2;
     private static final int NUM_COLUMNS_HORIZONTAL = 3;
+
+    // DAO Factory
     private DaoFactory daoFactory;
 
     // MoviesDao Recycler View Adapter
@@ -42,7 +48,8 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
     private GridLayoutManager layoutManager;
 
     // Default loading
-    private ProgressBar mLoadingProgressBar;
+    @BindView(R.id.pb_loading_indicator)
+    ProgressBar mLoadingProgressBar;
 
     // Default Toast
     private Toast mToast;
@@ -65,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         mMoviesRecyclerView.setHasFixedSize(false);
         mMoviesRecyclerView.setAdapter(mMoviesRecyclerViewAdapter);
 
-        mLoadingProgressBar = (ProgressBar) findViewById(R.id.pb_loading_indicator);
+        ButterKnife.bind(this);
 
         refreshMoviesPopular();
         Log.d(LOG_TAG, "Main Activity created successfully!");
