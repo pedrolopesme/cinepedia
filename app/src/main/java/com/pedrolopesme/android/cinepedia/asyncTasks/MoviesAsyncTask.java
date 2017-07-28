@@ -31,7 +31,6 @@ public class MoviesAsyncTask extends AsyncTask<Sorting, Void, Boolean> {
         this.moviesDao = daoFactory.getMoviesDao();
     }
 
-
     @Override
     protected Boolean doInBackground(final Sorting... params) {
         try {
