@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.pedrolopesme.android.cinepedia.dao.MoviesDao;
 import com.pedrolopesme.android.cinepedia.domain.Movie;
-import com.pedrolopesme.android.cinepedia.parser.MovieDBParser;
+import com.pedrolopesme.android.cinepedia.parser.MoviesParser;
 import com.pedrolopesme.android.cinepedia.utils.NetworkUtil;
 
 import java.net.URL;
@@ -42,7 +42,7 @@ class HttpMoviesDao extends HttpBaseDao implements MoviesDao {
             URL url = buildUrl(POPULAR_PATH);
             String jsonStr = NetworkUtil.getResponseFromHttpUrl(url);
             if (jsonStr != null && !jsonStr.trim().isEmpty()) {
-                return MovieDBParser.parseList(jsonStr);
+                return MoviesParser.parseList(jsonStr);
             }
         } catch (Exception ex) {
             Log.e(LOG_TAG, "It was impossible to get popular movies", ex);
@@ -63,7 +63,7 @@ class HttpMoviesDao extends HttpBaseDao implements MoviesDao {
             URL url = buildUrl(RATED_PATH);
             String jsonStr = NetworkUtil.getResponseFromHttpUrl(url);
             if (jsonStr != null && !jsonStr.trim().isEmpty()) {
-                return MovieDBParser.parseList(jsonStr);
+                return MoviesParser.parseList(jsonStr);
             }
         } catch (Exception ex) {
             Log.e(LOG_TAG, "It was impossible to get top rated movies", ex);

@@ -15,9 +15,9 @@ import java.util.List;
 /**
  * Movie DB Json Parser
  */
-public class MovieDBParser extends BaseParser {
+public class MoviesParser extends BaseParser {
 
-    private static final String LOG_TAG = MovieDBParser.class.getSimpleName();
+    private static final String LOG_TAG = MoviesParser.class.getSimpleName();
     static final String JSON_ROOT = "results";
     static final String JSON_ID = "id";
     static final String JSON_POSTER_PATH = "poster_path";
