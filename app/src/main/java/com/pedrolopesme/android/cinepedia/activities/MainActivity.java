@@ -38,7 +38,7 @@ public class MainActivity extends MoviesActivity implements MovieItemClickListen
     // DAO Factory
     private DaoFactory daoFactory;
 
-    // MoviesDao Recycler View Adapter
+    // Movies Recycler View Adapter
     private MoviesRecyclerViewAdapter mMoviesRecyclerViewAdapter;
 
     // Layout manager

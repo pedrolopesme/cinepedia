@@ -2,6 +2,7 @@ package com.pedrolopesme.android.cinepedia.dao.http;
 
 import com.pedrolopesme.android.cinepedia.dao.DaoFactory;
 import com.pedrolopesme.android.cinepedia.dao.MoviesDao;
+import com.pedrolopesme.android.cinepedia.dao.TrailerDao;
 
 public class HttpDaoFactory implements DaoFactory {
 
@@ -16,6 +17,11 @@ public class HttpDaoFactory implements DaoFactory {
     @Override
     public MoviesDao getMoviesDao() {
         return new HttpMoviesDao(baseUrl, apiKey);
+    }
+
+    @Override
+    public TrailerDao getTrailerDao() {
+        return new HttpTrailerDao(baseUrl, apiKey);
     }
 
 }
