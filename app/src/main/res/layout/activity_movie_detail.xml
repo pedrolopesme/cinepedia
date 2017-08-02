@@ -112,19 +112,25 @@
                 <TextView
                     android:id="@+id/trailers_title"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:gravity="start"
                     android:text="@string/trailers_title"
                     android:textColor="@color/colorText"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
+            </TableRow>
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
+
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rc_trailers"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp" />
             </TableRow>

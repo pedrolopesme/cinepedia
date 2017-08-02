@@ -14,6 +14,8 @@ import com.pedrolopesme.android.cinepedia.domain.Trailer;
 
 import java.util.List;
 
+import butterknife.BindView;
+
 /**
  * Recycler View Adapter responsible to load new MoviesDao to the
  * main grid
@@ -59,7 +61,10 @@ public class TrailerRecyclerViewAdapter extends RecyclerView.Adapter<TrailerRecy
     @Override
     public void onBindViewHolder(TrailerViewHolder holder, int position) {
         Log.i(LOG_TAG, trailers.get(position).toString());
-        holder.render(position);
+        Trailer trailer = trailers.get(position);
+        if (trailer != null) {
+            holder.render(trailer);
+        }
     }
 
     @Override
@@ -81,11 +86,11 @@ public class TrailerRecyclerViewAdapter extends RecyclerView.Adapter<TrailerRecy
         // Log tag description
         final String LOG_TAG = this.getClass().getSimpleName();
 
-//        final TextView mTrailerName;
+        final TextView mTrailerName;
 
         TrailerViewHolder(final View itemView) {
             super(itemView);
-//            mTrailerName = (TextView) itemView.findViewById(R.id.tv_trailer_name);
+            mTrailerName = (TextView) itemView.findViewById(R.id.tv_trailer_name);
             itemView.setOnClickListener(this);
             Log.d(LOG_TAG, "View Holder Created");
         }
@@ -101,8 +106,8 @@ public class TrailerRecyclerViewAdapter extends RecyclerView.Adapter<TrailerRecy
             }
         }
 
-        void render(int position) {
-//            mTrailerName.setText("Trailer #" + position);
+        void render(Trailer trailer) {
+            mTrailerName.setText(trailer.getName());
         }
 
     }

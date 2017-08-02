@@ -1,6 +1,7 @@
 package com.pedrolopesme.android.cinepedia.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.pedrolopesme.android.cinepedia.R;
 import com.pedrolopesme.android.cinepedia.adapters.TrailerRecyclerViewAdapter;
 import com.pedrolopesme.android.cinepedia.asyncTasks.TrailersAsyncTask;
+import com.pedrolopesme.android.cinepedia.builders.TrailerUriBuilder;
 import com.pedrolopesme.android.cinepedia.clickListeners.TrailerItemClickListener;
 import com.pedrolopesme.android.cinepedia.dao.DaoFactory;
 import com.pedrolopesme.android.cinepedia.dao.http.HttpDaoFactory;
@@ -189,5 +191,10 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerIte
     @Override
     public void onTrailerItemClick(Trailer trailer) {
         Log.i(LOG_TAG, "Trailer clicked: " + trailer);
+        Uri trailerLink = TrailerUriBuilder.build(trailer);
+        if (trailerLink != null) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, trailerLink);
+            startActivity(intent);
+        }
     }
 }

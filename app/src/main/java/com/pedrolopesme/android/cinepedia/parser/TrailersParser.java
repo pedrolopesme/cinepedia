@@ -62,6 +62,13 @@ public class TrailersParser extends BaseParser {
     static Trailer parseTrailer(final JSONObject json) {
         try {
             if (json != null && json.has(JSON_ID)) {
+
+                Trailer.Type type = parseTrailerType(json);
+
+                if (type == null || !type.equals(Trailer.Type.TRAILER)) {
+                    return null;
+                }
+
                 String id = json.getString(JSON_ID);
                 String iso_639_1 = json.getString(JSON_ISO_639_1);
                 String iso_3166_1 = json.getString(JSON_ISO_3166_1);
@@ -69,8 +76,6 @@ public class TrailersParser extends BaseParser {
                 String name = json.getString(JSON_NAME);
                 String site = json.getString(JSON_SITE);
                 long size = json.getLong(JSON_SIZE);
-                Trailer.Type type = parseTrailerType(json);
-
 
                 Trailer trailer = new Trailer();
                 trailer.setId(id);
