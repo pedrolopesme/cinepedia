@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Trailer Json Parser
  */
-public class TrailersParser extends BaseParser {
+final public class TrailersParser extends BaseParser {
 
     private static final String LOG_TAG = TrailersParser.class.getSimpleName();
     static final String JSON_ROOT = "results";

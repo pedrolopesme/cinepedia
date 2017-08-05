@@ -3,8 +3,10 @@ package com.pedrolopesme.android.cinepedia.dao.http;
 import android.net.Uri;
 import android.util.Log;
 
-import com.pedrolopesme.android.cinepedia.dao.TrailerDao;
+import com.pedrolopesme.android.cinepedia.dao.ReviewDao;
+import com.pedrolopesme.android.cinepedia.domain.Review;
 import com.pedrolopesme.android.cinepedia.domain.Trailer;
+import com.pedrolopesme.android.cinepedia.parser.ReviewsParser;
 import com.pedrolopesme.android.cinepedia.parser.TrailersParser;
 import com.pedrolopesme.android.cinepedia.utils.NetworkUtil;
 
@@ -12,38 +14,38 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
-final class HttpTrailerDao extends HttpBaseDao implements TrailerDao {
+final class HttpReviewDao extends HttpBaseDao implements ReviewDao {
 
-    private static final String LOG_TAG = HttpTrailerDao.class.getSimpleName();
+    private static final String LOG_TAG = HttpReviewDao.class.getSimpleName();
 
-    private static final String TRAILERS_PATH = "videos";
+    private static final String REVIEWS_PATH = "reviews";
 
     /**
-     * Http Trailer Dao
+     * Http Review Dao
      *
      * @param baseUrl url
      * @param apiKey  api key
      */
-    HttpTrailerDao(final String baseUrl, final String apiKey) {
+    HttpReviewDao(final String baseUrl, final String apiKey) {
         super(baseUrl, apiKey);
     }
 
     /**
-     * Return trailers of a Movie
+     * Return reviews of a Movie
      *
-     * @return list of trailers
+     * @return list of reviews
      */
     @Override
-    public List<Trailer> get(int movieId) {
+    public List<Review> get(int movieId) {
         try {
-            Log.d(LOG_TAG, "Getting movie trailers");
+            Log.d(LOG_TAG, "Getting movie reviews");
             URL url = buildUrl(movieId);
             String jsonStr = NetworkUtil.getResponseFromHttpUrl(url);
             if (jsonStr != null && !jsonStr.trim().isEmpty()) {
-                return TrailersParser.parseList(jsonStr);
+                return ReviewsParser.parseList(jsonStr);
             }
         } catch (Exception ex) {
-            Log.e(LOG_TAG, "It was impossible to get movie's trailer", ex);
+            Log.e(LOG_TAG, "It was impossible to get movie's reviews", ex);
         }
         return null;
     }
@@ -54,7 +56,7 @@ final class HttpTrailerDao extends HttpBaseDao implements TrailerDao {
             Uri uri = Uri.parse(getBaseUrl())
                     .buildUpon()
                     .appendPath(String.valueOf(movieId))
-                    .appendPath(TRAILERS_PATH)
+                    .appendPath(REVIEWS_PATH)
                     .appendQueryParameter("api_key", getApiKey())
                     .build();
             Log.d(LOG_TAG, "URL Built to path " + uri.toString());

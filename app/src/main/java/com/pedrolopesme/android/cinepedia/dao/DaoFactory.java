@@ -6,4 +6,6 @@ public interface DaoFactory {
 
     TrailerDao getTrailerDao();
 
+    ReviewDao getReviewDao();
+
 }

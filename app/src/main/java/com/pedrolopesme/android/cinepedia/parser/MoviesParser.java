@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Movie DB Json Parser
  */
-public class MoviesParser extends BaseParser {
+final public class MoviesParser extends BaseParser {
 
     private static final String LOG_TAG = MoviesParser.class.getSimpleName();
     static final String JSON_ROOT = "results";
