@@ -68,13 +68,21 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerIte
     @BindView(R.id.pb_loading_indicator)
     ProgressBar mLoadingProgressBar;
 
-    // Default loading
+    // Trailers Recycler View
     @BindView(R.id.rc_trailers)
     RecyclerView mTrailersRecyclerView;
 
-    // Default loading
+    // Reviews Recycler View
     @BindView(R.id.rc_reviews)
     RecyclerView mReviewsRecyclerView;
+
+    // Trailers - No Items Message
+    @BindView(R.id.tv_trailers_no_items)
+    TextView mTrailersNoItemsTextView;
+
+    // Reviews - No Items Message
+    @BindView(R.id.tv_reviews_no_items)
+    TextView mReviewNoItemsTextView;
 
     // Trailer Recycler View Adapter
     TrailerRecyclerViewAdapter mTrailerRecyclerViewAdapter;
@@ -185,6 +193,11 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerIte
             public void run() {
                 Log.d(LOG_TAG, "Refreshing recycler view with trailers found");
                 mTrailerRecyclerViewAdapter.setTrailers(trailers);
+
+                if (trailers.size() == 0)
+                    mTrailersNoItemsTextView.setVisibility(View.VISIBLE);
+                else
+                    mTrailersNoItemsTextView.setVisibility(View.GONE);
             }
         });
     }
@@ -200,6 +213,11 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerIte
             public void run() {
                 Log.d(LOG_TAG, "Refreshing recycler view with reviews found");
                 mReviewRecyclerViewAdapter.setReviews(reviews);
+
+                if (reviews.size() == 0)
+                    mReviewNoItemsTextView.setVisibility(View.VISIBLE);
+                else
+                    mReviewNoItemsTextView.setVisibility(View.GONE);
             }
         });
     }

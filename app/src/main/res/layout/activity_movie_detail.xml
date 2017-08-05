@@ -122,6 +122,16 @@
 
             </TableRow>
 
+            <TextView
+                android:id="@+id/tv_trailers_no_items"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="25dp"
+                android:visibility="gone"
+                android:textAlignment="center"
+                android:text="@string/error_no_items"
+                android:textColor="@color/colorText" />
+
             <TableRow
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -151,7 +161,18 @@
                     android:textColor="@color/colorText"
                     android:textSize="18sp"
                     android:textStyle="bold" />
+
             </TableRow>
+
+            <TextView
+                android:id="@+id/tv_reviews_no_items"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="25dp"
+                android:visibility="gone"
+                android:textAlignment="center"
+                android:text="@string/error_no_items"
+                android:textColor="@color/colorText" />
 
             <TableRow
                 android:layout_width="fill_parent"

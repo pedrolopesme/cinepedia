@@ -13,5 +13,6 @@
     <string name="trailers_title">Trailers:</string>
     <string name="review_content_description">Review</string>
     <string name="reviews_title">Reviews</string>
+    <string name="error_no_items">No items has been found</string>
 
 </resources>
