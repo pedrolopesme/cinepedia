@@ -101,12 +101,14 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerIte
         mTrailerRecyclerViewAdapter = new TrailerRecyclerViewAdapter(getApplicationContext(), this);
         mTrailersRecyclerView.setLayoutManager(trailerLayoutManager);
         mTrailersRecyclerView.setHasFixedSize(false);
+        mTrailersRecyclerView.setNestedScrollingEnabled(false);
         mTrailersRecyclerView.setAdapter(mTrailerRecyclerViewAdapter);
 
         LinearLayoutManager reviewLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mReviewRecyclerViewAdapter = new ReviewRecyclerViewAdapter(getApplicationContext());
         mReviewsRecyclerView.setLayoutManager(reviewLayoutManager);
         mReviewsRecyclerView.setHasFixedSize(false);
+        mReviewsRecyclerView.setNestedScrollingEnabled(false);
         mReviewsRecyclerView.setAdapter(mReviewRecyclerViewAdapter);
 
         final Movie movie = getMovie();
