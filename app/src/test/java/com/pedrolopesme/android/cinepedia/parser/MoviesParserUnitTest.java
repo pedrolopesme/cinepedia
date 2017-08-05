@@ -15,17 +15,17 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 
-public class MovieDBParserUnitTest {
+public class MoviesParserUnitTest {
 
     @Test
     public void testParseGenreIdsNullJson() throws Exception {
-        assertNull(MovieDBParser.parseGenreIds(null));
+        assertNull(MoviesParser.parseGenreIds(null));
     }
 
     @Test
     public void testParseGenreIdsEmptyJson() throws Exception {
         List<Integer> expectedGenreIds = new ArrayList<>();
-        assertEquals(expectedGenreIds, MovieDBParser.parseGenreIds(new JSONArray()));
+        assertEquals(expectedGenreIds, MoviesParser.parseGenreIds(new JSONArray()));
     }
 
     @Test
@@ -37,34 +37,34 @@ public class MovieDBParserUnitTest {
 
         JSONArray json = new JSONArray();
         json.put(1).put(2).put(3);
-        assertEquals(expectedGenreIds, MovieDBParser.parseGenreIds(json));
+        assertEquals(expectedGenreIds, MoviesParser.parseGenreIds(json));
     }
 
     @Test
     public void testParseMovieNullJson() throws Exception {
-        assertNull(MovieDBParser.parseMovie(null));
+        assertNull(MoviesParser.parseMovie(null));
     }
 
     @Test
     public void testParseMovieEmptyJson() throws Exception {
-        assertNull(MovieDBParser.parseMovie(new JSONObject()));
+        assertNull(MoviesParser.parseMovie(new JSONObject()));
     }
 
     @Test
     public void testParseMovieJson() throws Exception {
         JSONObject json = generateJson(1, "Foo");
         Movie expectedMovie = generateMovie(1, "Foo");
-        assertEquals(expectedMovie, MovieDBParser.parseMovie(json));
+        assertEquals(expectedMovie, MoviesParser.parseMovie(json));
     }
 
     @Test
     public void testParseMovieNullJsonList() throws Exception {
-        assertNull(MovieDBParser.parseList(null));
+        assertNull(MoviesParser.parseList(null));
     }
 
     @Test
     public void testParseMovieEmptyJsonList() throws Exception {
-        assertNull(MovieDBParser.parseList(""));
+        assertNull(MoviesParser.parseList(""));
     }
 
     @Test
@@ -79,9 +79,9 @@ public class MovieDBParserUnitTest {
         jsonMovies.put(generateJson(2, "Bar"));
         jsonMovies.put(generateJson(3, "Baz"));
         JSONObject json = new JSONObject();
-        json.put(MovieDBParser.JSON_ROOT, jsonMovies);
+        json.put(MoviesParser.JSON_ROOT, jsonMovies);
 
-        List<Movie> generatedList = MovieDBParser.parseList(json.toString());
+        List<Movie> generatedList = MoviesParser.parseList(json.toString());
         assertNotNull(generatedList);
         assertEquals(expectedMovies.size(), generatedList.size());
         assertEquals(expectedMovies.get(0), generatedList.get(0));
@@ -124,21 +124,21 @@ public class MovieDBParserUnitTest {
             genreIds.put(3);
 
             JSONObject json = new JSONObject();
-            json.put(MovieDBParser.JSON_ID, id);
-            json.put(MovieDBParser.JSON_TITLE, name);
-            json.put(MovieDBParser.JSON_ORIGINAL_TITLE, name);
-            json.put(MovieDBParser.JSON_ORIGINAL_LANGUAGE, name);
-            json.put(MovieDBParser.JSON_ADULT, false);
-            json.put(MovieDBParser.JSON_BACKDROP, "backdrop.png");
-            json.put(MovieDBParser.JSON_GENRE_IDS, genreIds);
-            json.put(MovieDBParser.JSON_POSTER_PATH, "poster.png");
-            json.put(MovieDBParser.JSON_ORIGINAL_LANGUAGE, "EN");
-            json.put(MovieDBParser.JSON_OVERVIEW, "Foo bar baz");
-            json.put(MovieDBParser.JSON_POPULARITY, 1);
-            json.put(MovieDBParser.JSON_RELEASE_DATE, "2017-01-01");
-            json.put(MovieDBParser.JSON_VOTE_COUNT, 10);
-            json.put(MovieDBParser.JSON_VIDEO, true);
-            json.put(MovieDBParser.JSON_VOTE_AVG, 10);
+            json.put(MoviesParser.JSON_ID, id);
+            json.put(MoviesParser.JSON_TITLE, name);
+            json.put(MoviesParser.JSON_ORIGINAL_TITLE, name);
+            json.put(MoviesParser.JSON_ORIGINAL_LANGUAGE, name);
+            json.put(MoviesParser.JSON_ADULT, false);
+            json.put(MoviesParser.JSON_BACKDROP, "backdrop.png");
+            json.put(MoviesParser.JSON_GENRE_IDS, genreIds);
+            json.put(MoviesParser.JSON_POSTER_PATH, "poster.png");
+            json.put(MoviesParser.JSON_ORIGINAL_LANGUAGE, "EN");
+            json.put(MoviesParser.JSON_OVERVIEW, "Foo bar baz");
+            json.put(MoviesParser.JSON_POPULARITY, 1);
+            json.put(MoviesParser.JSON_RELEASE_DATE, "2017-01-01");
+            json.put(MoviesParser.JSON_VOTE_COUNT, 10);
+            json.put(MoviesParser.JSON_VIDEO, true);
+            json.put(MoviesParser.JSON_VOTE_AVG, 10);
             return json;
         } catch (Exception ex) {
             return null;

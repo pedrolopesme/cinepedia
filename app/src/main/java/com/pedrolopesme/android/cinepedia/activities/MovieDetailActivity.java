@@ -1,27 +1,45 @@
 package com.pedrolopesme.android.cinepedia.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pedrolopesme.android.cinepedia.R;
+import com.pedrolopesme.android.cinepedia.adapters.TrailerRecyclerViewAdapter;
+import com.pedrolopesme.android.cinepedia.asyncTasks.TrailersAsyncTask;
+import com.pedrolopesme.android.cinepedia.builders.TrailerUriBuilder;
+import com.pedrolopesme.android.cinepedia.clickListeners.TrailerItemClickListener;
+import com.pedrolopesme.android.cinepedia.dao.DaoFactory;
+import com.pedrolopesme.android.cinepedia.dao.http.HttpDaoFactory;
 import com.pedrolopesme.android.cinepedia.domain.Movie;
+import com.pedrolopesme.android.cinepedia.domain.Trailer;
 import com.pedrolopesme.android.cinepedia.utils.DateUtil;
 import com.pedrolopesme.android.cinepedia.utils.NumberUtil;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MovieDetailActivity extends AppCompatActivity {
+public class MovieDetailActivity extends AppCompatActivity implements TrailerItemClickListener {
 
     // Log tag description
     private final static String LOG_TAG = MovieDetailActivity.class.getSimpleName();
+
+    // DAO Factory
+    private DaoFactory daoFactory;
 
     // Movie name
     @BindView(R.id.tv_movie_name)
@@ -43,6 +61,23 @@ public class MovieDetailActivity extends AppCompatActivity {
     @BindView(R.id.tv_movie_synopsis)
     TextView mMovieSynopsisTextView;
 
+    // Default loading
+    @BindView(R.id.pb_loading_indicator)
+    ProgressBar mLoadingProgressBar;
+
+    // Default loading
+    @BindView(R.id.rc_trailers)
+    RecyclerView mTrailersRecyclerView;
+
+    // Trailer Recycler View Adapter
+    TrailerRecyclerViewAdapter mTrailerRecyclerViewAdapter;
+
+
+    // Layout manager
+    private LinearLayoutManager layoutManager;
+
+    private Toast toast;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         Log.d(LOG_TAG, "Creating Movie Detail Activity!");
@@ -52,8 +87,22 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        Movie movie = getMovie();
+        String baseUrl = getString(R.string.moviedb_base_url);
+        String apiKey = getString(R.string.moviedb_api_key);
+        daoFactory = new HttpDaoFactory(baseUrl, apiKey);
+
+        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mTrailerRecyclerViewAdapter = new TrailerRecyclerViewAdapter(getApplicationContext(), this);
+
+        mTrailersRecyclerView.setLayoutManager(layoutManager);
+        mTrailersRecyclerView.setHasFixedSize(false);
+        mTrailersRecyclerView.setAdapter(mTrailerRecyclerViewAdapter);
+
+        final Movie movie = getMovie();
         renderActivity(movie);
+
+        refreshTrailers(movie);
+        Log.d(LOG_TAG, "Movie Detail created successfully!");
     }
 
     /**
@@ -111,4 +160,41 @@ public class MovieDetailActivity extends AppCompatActivity {
         return null;
     }
 
+    public void refreshTrailers(Movie movie) {
+        Log.d(LOG_TAG, "Refreshing movies grid with popular titles");
+        setTitle(R.string.main_menu_popular);
+        new TrailersAsyncTask(this, daoFactory).execute(movie);
+    }
+
+    public void refreshTrailers(final List<Trailer> trailers) {
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(LOG_TAG, "Refreshing recycler view with trailers found");
+                mTrailerRecyclerViewAdapter.setTrailers(trailers);
+            }
+        });
+    }
+
+    public View getProgressBar() {
+        return mLoadingProgressBar;
+    }
+
+    public Toast getToast() {
+        return toast;
+    }
+
+    public void setToast(Toast toast) {
+        this.toast = toast;
+    }
+
+    @Override
+    public void onTrailerItemClick(Trailer trailer) {
+        Log.i(LOG_TAG, "Trailer clicked: " + trailer);
+        Uri trailerLink = TrailerUriBuilder.build(trailer);
+        if (trailerLink != null) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, trailerLink);
+            startActivity(intent);
+        }
+    }
 }

@@ -54,8 +54,8 @@
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
-                    android:gravity="center"
                     android:contentDescription="@string/app_name"
+                    android:gravity="center"
                     android:scaleType="centerCrop" />
 
                 <!-- Movie info -->
@@ -102,6 +102,45 @@
                     android:textColor="@color/colorText"
                     android:textSize="15sp" />
             </TableRow>
+
+            <!-- Trailers -->
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:id="@+id/trailers_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:text="@string/trailers_title"
+                    android:textColor="@color/colorText"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rc_trailers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp" />
+            </TableRow>
+
+            <ProgressBar
+                android:id="@+id/pb_loading_indicator"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_gravity="center"
+                android:visibility="invisible" />
 
         </LinearLayout>
     </ScrollView>

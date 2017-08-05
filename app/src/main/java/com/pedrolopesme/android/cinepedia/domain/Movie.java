@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Movie implements Parcelable {
+public final class Movie implements Parcelable {
 
     private int id;
     private MovieImage posterImage;

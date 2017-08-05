@@ -1,16 +1,18 @@
 package com.pedrolopesme.android.cinepedia.dao.http;
 
+import android.net.Uri;
 import android.util.Log;
 
 import com.pedrolopesme.android.cinepedia.dao.MoviesDao;
 import com.pedrolopesme.android.cinepedia.domain.Movie;
-import com.pedrolopesme.android.cinepedia.parser.MovieDBParser;
+import com.pedrolopesme.android.cinepedia.parser.MoviesParser;
 import com.pedrolopesme.android.cinepedia.utils.NetworkUtil;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
-class HttpMoviesDao extends HttpBaseDao implements MoviesDao {
+final class HttpMoviesDao extends HttpBaseDao implements MoviesDao {
 
     private static final String LOG_TAG = HttpMoviesDao.class.getSimpleName();
 
@@ -42,7 +44,7 @@ class HttpMoviesDao extends HttpBaseDao implements MoviesDao {
             URL url = buildUrl(POPULAR_PATH);
             String jsonStr = NetworkUtil.getResponseFromHttpUrl(url);
             if (jsonStr != null && !jsonStr.trim().isEmpty()) {
-                return MovieDBParser.parseList(jsonStr);
+                return MoviesParser.parseList(jsonStr);
             }
         } catch (Exception ex) {
             Log.e(LOG_TAG, "It was impossible to get popular movies", ex);
@@ -63,11 +65,28 @@ class HttpMoviesDao extends HttpBaseDao implements MoviesDao {
             URL url = buildUrl(RATED_PATH);
             String jsonStr = NetworkUtil.getResponseFromHttpUrl(url);
             if (jsonStr != null && !jsonStr.trim().isEmpty()) {
-                return MovieDBParser.parseList(jsonStr);
+                return MoviesParser.parseList(jsonStr);
             }
         } catch (Exception ex) {
             Log.e(LOG_TAG, "It was impossible to get top rated movies", ex);
         }
         return null;
     }
+
+    private URL buildUrl(final String path) {
+        try {
+            Log.d(LOG_TAG, "Building URL to path " + path);
+            Uri uri = Uri.parse(getBaseUrl())
+                    .buildUpon()
+                    .appendPath(path)
+                    .appendQueryParameter("api_key", getApiKey())
+                    .build();
+            Log.d(LOG_TAG, "URL Built to path " + uri.toString());
+            return new URL(uri.toString());
+        } catch (MalformedURLException ex) {
+            Log.e(LOG_TAG, "It was impossible to build URL with path: " + path, ex);
+        }
+        return null;
+    }
+
 }

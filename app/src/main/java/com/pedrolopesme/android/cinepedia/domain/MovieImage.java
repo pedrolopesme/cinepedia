@@ -6,7 +6,7 @@ import android.os.Parcelable;
 /**
  * Movie Image Paths
  */
-public class MovieImage implements Parcelable {
+public final class MovieImage implements Parcelable {
 
     private static final String BASE_PATH = "http://image.tmdb.org/t/p/w";
     private final String path;

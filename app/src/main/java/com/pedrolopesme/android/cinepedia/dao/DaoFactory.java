@@ -4,4 +4,6 @@ public interface DaoFactory {
 
     MoviesDao getMoviesDao();
 
+    TrailerDao getTrailerDao();
+
 }
