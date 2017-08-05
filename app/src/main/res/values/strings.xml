@@ -11,5 +11,7 @@
     <!-- TITLES -->
     <string name="title_moviedetail">MovieDetail</string>
     <string name="trailers_title">Trailers:</string>
+    <string name="review_content_description">Review</string>
+    <string name="reviews_title">Reviews</string>
 
 </resources>

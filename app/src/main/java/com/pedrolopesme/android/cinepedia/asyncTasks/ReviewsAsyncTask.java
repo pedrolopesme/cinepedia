@@ -9,32 +9,32 @@ import android.widget.Toast;
 import com.pedrolopesme.android.cinepedia.R;
 import com.pedrolopesme.android.cinepedia.activities.MovieDetailActivity;
 import com.pedrolopesme.android.cinepedia.dao.DaoFactory;
-import com.pedrolopesme.android.cinepedia.dao.TrailerDao;
+import com.pedrolopesme.android.cinepedia.dao.ReviewDao;
 import com.pedrolopesme.android.cinepedia.domain.Movie;
 
 /**
- * Trailers fetcher async task
+ * Reviews async task
  */
-public class TrailersAsyncTask extends AsyncTask<Movie, Void, Boolean> {
+final public class ReviewsAsyncTask extends AsyncTask<Movie, Void, Boolean> {
 
     // Log tag description
-    private final static String LOG_TAG = TrailersAsyncTask.class.getSimpleName();
+    private final static String LOG_TAG = ReviewsAsyncTask.class.getSimpleName();
 
     // Attached Activity
     private final MovieDetailActivity activity;
 
-    // Trailer Dao
-    private final TrailerDao trailerDao;
+    // Reviews Dao
+    private final ReviewDao reviewDao;
 
-    public TrailersAsyncTask(MovieDetailActivity activity, DaoFactory daoFactory) {
+    public ReviewsAsyncTask(MovieDetailActivity activity, DaoFactory daoFactory) {
         this.activity = activity;
-        this.trailerDao = daoFactory.getTrailerDao();
+        this.reviewDao = daoFactory.getReviewDao();
     }
 
     @Override
     protected Boolean doInBackground(final Movie... params) {
         try {
-            Log.d(LOG_TAG, "Refreshing trailers");
+            Log.d(LOG_TAG, "Refreshing reviews");
             Movie movie = params[0];
             refresh(movie);
             return true;
@@ -45,29 +45,29 @@ public class TrailersAsyncTask extends AsyncTask<Movie, Void, Boolean> {
     }
 
     /**
-     * Refreshing Trailers
+     * Refreshing Reviews
      *
      * @param movie Item
      */
     private void refresh(final Movie movie) {
         if (movie == null) {
-            Log.e(LOG_TAG, "It's impossible to refresh movie trailers with a NULL movie");
+            Log.e(LOG_TAG, "It's impossible to refresh movie reviews with a NULL movie");
             return;
         }
 
-        Log.d(LOG_TAG, "Getting movie trailers");
-        activity.refreshTrailers(trailerDao.get(movie.getId()));
+        Log.d(LOG_TAG, "Getting movie reviews");
+        activity.refreshReviews(reviewDao.get(movie.getId()));
     }
 
     @Override
     protected void onPreExecute() {
-        Log.d(LOG_TAG, "Executing TrailersAsyncTask");
+        Log.d(LOG_TAG, "Executing ReviewsAsyncTask");
         activity.getProgressBar().setVisibility(View.VISIBLE);
     }
 
     @Override
     protected void onPostExecute(final Boolean result) {
-        Log.d(LOG_TAG, "Finishing TrailersAsyncTask execution");
+        Log.d(LOG_TAG, "Finishing ReviewsAsyncTask execution");
         activity.getProgressBar().setVisibility(View.INVISIBLE);
         if (!result) {
             Context context = activity.getApplicationContext();

@@ -5,13 +5,12 @@ import android.util.Log;
 
 import com.pedrolopesme.android.cinepedia.dao.ReviewDao;
 import com.pedrolopesme.android.cinepedia.domain.Review;
-import com.pedrolopesme.android.cinepedia.domain.Trailer;
 import com.pedrolopesme.android.cinepedia.parser.ReviewsParser;
-import com.pedrolopesme.android.cinepedia.parser.TrailersParser;
 import com.pedrolopesme.android.cinepedia.utils.NetworkUtil;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 final class HttpReviewDao extends HttpBaseDao implements ReviewDao {

@@ -16,13 +16,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pedrolopesme.android.cinepedia.R;
+import com.pedrolopesme.android.cinepedia.adapters.ReviewRecyclerViewAdapter;
 import com.pedrolopesme.android.cinepedia.adapters.TrailerRecyclerViewAdapter;
+import com.pedrolopesme.android.cinepedia.asyncTasks.ReviewsAsyncTask;
 import com.pedrolopesme.android.cinepedia.asyncTasks.TrailersAsyncTask;
 import com.pedrolopesme.android.cinepedia.builders.TrailerUriBuilder;
 import com.pedrolopesme.android.cinepedia.clickListeners.TrailerItemClickListener;
 import com.pedrolopesme.android.cinepedia.dao.DaoFactory;
 import com.pedrolopesme.android.cinepedia.dao.http.HttpDaoFactory;
 import com.pedrolopesme.android.cinepedia.domain.Movie;
+import com.pedrolopesme.android.cinepedia.domain.Review;
 import com.pedrolopesme.android.cinepedia.domain.Trailer;
 import com.pedrolopesme.android.cinepedia.utils.DateUtil;
 import com.pedrolopesme.android.cinepedia.utils.NumberUtil;
@@ -69,12 +72,15 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerIte
     @BindView(R.id.rc_trailers)
     RecyclerView mTrailersRecyclerView;
 
+    // Default loading
+    @BindView(R.id.rc_reviews)
+    RecyclerView mReviewsRecyclerView;
+
     // Trailer Recycler View Adapter
     TrailerRecyclerViewAdapter mTrailerRecyclerViewAdapter;
 
-
-    // Layout manager
-    private LinearLayoutManager layoutManager;
+    // Review Recycler View Adapter
+    ReviewRecyclerViewAdapter mReviewRecyclerViewAdapter;
 
     private Toast toast;
 
@@ -91,17 +97,23 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerIte
         String apiKey = getString(R.string.moviedb_api_key);
         daoFactory = new HttpDaoFactory(baseUrl, apiKey);
 
-        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager trailerLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mTrailerRecyclerViewAdapter = new TrailerRecyclerViewAdapter(getApplicationContext(), this);
-
-        mTrailersRecyclerView.setLayoutManager(layoutManager);
+        mTrailersRecyclerView.setLayoutManager(trailerLayoutManager);
         mTrailersRecyclerView.setHasFixedSize(false);
         mTrailersRecyclerView.setAdapter(mTrailerRecyclerViewAdapter);
+
+        LinearLayoutManager reviewLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mReviewRecyclerViewAdapter = new ReviewRecyclerViewAdapter(getApplicationContext());
+        mReviewsRecyclerView.setLayoutManager(reviewLayoutManager);
+        mReviewsRecyclerView.setHasFixedSize(false);
+        mReviewsRecyclerView.setAdapter(mReviewRecyclerViewAdapter);
 
         final Movie movie = getMovie();
         renderActivity(movie);
 
         refreshTrailers(movie);
+        refreshReviews(movie);
         Log.d(LOG_TAG, "Movie Detail created successfully!");
     }
 
@@ -161,8 +173,7 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerIte
     }
 
     public void refreshTrailers(Movie movie) {
-        Log.d(LOG_TAG, "Refreshing movies grid with popular titles");
-        setTitle(R.string.main_menu_popular);
+        Log.d(LOG_TAG, "Refreshing trailers");
         new TrailersAsyncTask(this, daoFactory).execute(movie);
     }
 
@@ -172,6 +183,21 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerIte
             public void run() {
                 Log.d(LOG_TAG, "Refreshing recycler view with trailers found");
                 mTrailerRecyclerViewAdapter.setTrailers(trailers);
+            }
+        });
+    }
+
+    public void refreshReviews(Movie movie) {
+        Log.d(LOG_TAG, "Refreshing reviews ");
+        new ReviewsAsyncTask(this, daoFactory).execute(movie);
+    }
+
+    public void refreshReviews(final List<Review> reviews) {
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(LOG_TAG, "Refreshing recycler view with reviews found");
+                mReviewRecyclerViewAdapter.setReviews(reviews);
             }
         });
     }
