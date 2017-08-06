@@ -7,12 +7,15 @@
 
     <!-- ERRORS -->
     <string name="error_conectivity">Ops, your internet seems to be down :-(</string>
+    <string name="error_no_items">No items have been found</string>
 
     <!-- TITLES -->
     <string name="title_moviedetail">MovieDetail</string>
     <string name="trailers_title">Trailers:</string>
     <string name="review_content_description">Review</string>
     <string name="reviews_title">Reviews</string>
-    <string name="error_no_items">No items has been found</string>
+
+    <!-- MANIFEST STUFF -->
+    <string name="content_authority">com.pedrolopesme.android.cinepedia</string>
 
 </resources>

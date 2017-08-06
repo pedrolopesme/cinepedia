@@ -6,6 +6,6 @@
 
     <!-- MOVIEDB API KEY.
          PS: SENSITIVE DATA, DO NOT COMMIT IT IN A PUBLIC REPO -->
-    <string name="moviedb_api_key">YOUR KEY HERE</string>
+    <string name="moviedb_api_key">98b7d94971b35c93c10a5c8233cd96f7</string>
 
 </resources>
