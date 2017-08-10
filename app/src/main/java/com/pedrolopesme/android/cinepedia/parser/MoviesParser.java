@@ -70,7 +70,7 @@ final public class MoviesParser extends BaseParser {
      static Movie parseMovie(final JSONObject json) {
         try {
             if (json != null && json.has(JSON_ID)) {
-                int id = json.getInt(JSON_ID);
+                long id = json.getLong(JSON_ID);
                 String posterPath = json.getString(JSON_POSTER_PATH);
                 boolean adult = json.getBoolean(JSON_ADULT);
                 String overview = json.getString(JSON_OVERVIEW);

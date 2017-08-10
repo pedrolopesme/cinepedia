@@ -98,6 +98,7 @@ public class FavoritesProvider extends ContentProvider {
                 try {
                     final long id = db.insert(FavoriteEntry.TABLE_NAME, null, values);
                     if (id != -1) {
+                        db.setTransactionSuccessful();
                         return FavoriteEntry.buildUriWithId(id);
                     }
                 } catch (Exception ex) {
@@ -117,7 +118,7 @@ public class FavoritesProvider extends ContentProvider {
         int numRowsDeleted;
 
         switch (sUriMatcher.match(uri)) {
-            case CODE_FAVORITES:
+            case CODE_FAVORITES_WITH_ID:
                 String normalizedUtcDateString = uri.getLastPathSegment();
                 String[] selectionArguments = new String[]{normalizedUtcDateString};
 

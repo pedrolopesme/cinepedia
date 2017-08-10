@@ -13,7 +13,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-final class HttpReviewDao extends HttpBaseDao implements ReviewDao {
+public final class HttpReviewDao extends HttpBaseDao implements ReviewDao {
 
     private static final String LOG_TAG = HttpReviewDao.class.getSimpleName();
 
@@ -25,7 +25,7 @@ final class HttpReviewDao extends HttpBaseDao implements ReviewDao {
      * @param baseUrl url
      * @param apiKey  api key
      */
-    HttpReviewDao(final String baseUrl, final String apiKey) {
+    public HttpReviewDao(final String baseUrl, final String apiKey) {
         super(baseUrl, apiKey);
     }
 
@@ -35,7 +35,7 @@ final class HttpReviewDao extends HttpBaseDao implements ReviewDao {
      * @return list of reviews
      */
     @Override
-    public List<Review> get(int movieId) {
+    public List<Review> get(long movieId) {
         try {
             Log.d(LOG_TAG, "Getting movie reviews");
             URL url = buildUrl(movieId);
@@ -49,7 +49,7 @@ final class HttpReviewDao extends HttpBaseDao implements ReviewDao {
         return null;
     }
 
-    private URL buildUrl(final int movieId) {
+    private URL buildUrl(final long movieId) {
         try {
             Log.d(LOG_TAG, "Building URL to  " + movieId);
             Uri uri = Uri.parse(getBaseUrl())

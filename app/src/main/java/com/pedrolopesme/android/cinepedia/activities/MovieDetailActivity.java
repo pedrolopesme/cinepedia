@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -23,7 +24,8 @@ import com.pedrolopesme.android.cinepedia.asyncTasks.TrailersAsyncTask;
 import com.pedrolopesme.android.cinepedia.builders.TrailerUriBuilder;
 import com.pedrolopesme.android.cinepedia.clickListeners.TrailerItemClickListener;
 import com.pedrolopesme.android.cinepedia.dao.DaoFactory;
-import com.pedrolopesme.android.cinepedia.dao.http.HttpDaoFactory;
+import com.pedrolopesme.android.cinepedia.dao.BaseDaoFactory;
+import com.pedrolopesme.android.cinepedia.dao.FavoriteDao;
 import com.pedrolopesme.android.cinepedia.domain.Movie;
 import com.pedrolopesme.android.cinepedia.domain.Review;
 import com.pedrolopesme.android.cinepedia.domain.Trailer;
@@ -84,6 +86,10 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerIte
     @BindView(R.id.tv_reviews_no_items)
     TextView mReviewNoItemsTextView;
 
+    // Fav button
+    @BindView(R.id.ib_favorite)
+    ImageButton mFavoriteImageButton;
+
     // Trailer Recycler View Adapter
     TrailerRecyclerViewAdapter mTrailerRecyclerViewAdapter;
 
@@ -103,7 +109,7 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerIte
 
         String baseUrl = getString(R.string.moviedb_base_url);
         String apiKey = getString(R.string.moviedb_api_key);
-        daoFactory = new HttpDaoFactory(baseUrl, apiKey);
+        daoFactory = new BaseDaoFactory(baseUrl, apiKey, getContentResolver());
 
         LinearLayoutManager trailerLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mTrailerRecyclerViewAdapter = new TrailerRecyclerViewAdapter(getApplicationContext(), this);
@@ -121,6 +127,7 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerIte
 
         final Movie movie = getMovie();
         renderActivity(movie);
+        bindFavoriteCallback();
 
         refreshTrailers(movie);
         refreshReviews(movie);
@@ -158,7 +165,48 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerIte
                     .placeholder(R.drawable.ic_placeholder)
                     .error(R.drawable.ic_error)
                     .into(mMoviePosterTextView);
+
+            renderFavoriteIcon(movie);
         }
+    }
+
+    /**
+     * Render favorite button icon
+     *
+     * @param movie to be checked
+     */
+    private void renderFavoriteIcon(final Movie movie) {
+        final FavoriteDao favoriteDao = daoFactory.getFavoriteDao();
+        if (favoriteDao.isFavorite(movie.getId()))
+            mFavoriteImageButton.setBackgroundResource(R.drawable.ic_star_on);
+        else
+            mFavoriteImageButton.setBackgroundResource(R.drawable.ic_star_off);
+
+        mFavoriteImageButton.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * Binds Favorite Icon
+     */
+    private void bindFavoriteCallback() {
+        mFavoriteImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Movie movie = getMovie();
+                final FavoriteDao favoriteDao = daoFactory.getFavoriteDao();
+
+                String message;
+                if (favoriteDao.isFavorite(movie.getId())) {
+                    favoriteDao.delete(movie.getId());
+                    message = "Movie \"" + movie.getTitle() + "\" removed from favorites.";
+                } else {
+                    favoriteDao.insert(movie);
+                    message = "Movie \"" + movie.getTitle() + "\" added to favorites!";
+                }
+                renderFavoriteIcon(movie);
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override

@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface TrailerDao {
 
-    List<Trailer> get(int movieId);
+    List<Trailer> get(long movieId);
 
 }

@@ -12,7 +12,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
-final class HttpTrailerDao extends HttpBaseDao implements TrailerDao {
+public final class HttpTrailerDao extends HttpBaseDao implements TrailerDao {
 
     private static final String LOG_TAG = HttpTrailerDao.class.getSimpleName();
 
@@ -24,7 +24,7 @@ final class HttpTrailerDao extends HttpBaseDao implements TrailerDao {
      * @param baseUrl url
      * @param apiKey  api key
      */
-    HttpTrailerDao(final String baseUrl, final String apiKey) {
+    public HttpTrailerDao(final String baseUrl, final String apiKey) {
         super(baseUrl, apiKey);
     }
 
@@ -34,7 +34,7 @@ final class HttpTrailerDao extends HttpBaseDao implements TrailerDao {
      * @return list of trailers
      */
     @Override
-    public List<Trailer> get(int movieId) {
+    public List<Trailer> get(long movieId) {
         try {
             Log.d(LOG_TAG, "Getting movie trailers");
             URL url = buildUrl(movieId);
@@ -48,7 +48,7 @@ final class HttpTrailerDao extends HttpBaseDao implements TrailerDao {
         return null;
     }
 
-    private URL buildUrl(final int movieId) {
+    private URL buildUrl(final long movieId) {
         try {
             Log.d(LOG_TAG, "Building URL to  " + movieId);
             Uri uri = Uri.parse(getBaseUrl())

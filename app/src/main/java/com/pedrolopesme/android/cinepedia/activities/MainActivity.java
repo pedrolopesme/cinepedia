@@ -17,7 +17,7 @@ import com.pedrolopesme.android.cinepedia.adapters.MoviesRecyclerViewAdapter;
 import com.pedrolopesme.android.cinepedia.asyncTasks.MoviesAsyncTask;
 import com.pedrolopesme.android.cinepedia.clickListeners.MovieItemClickListener;
 import com.pedrolopesme.android.cinepedia.dao.DaoFactory;
-import com.pedrolopesme.android.cinepedia.dao.http.HttpDaoFactory;
+import com.pedrolopesme.android.cinepedia.dao.BaseDaoFactory;
 import com.pedrolopesme.android.cinepedia.domain.Movie;
 import com.pedrolopesme.android.cinepedia.domain.Sorting;
 
@@ -59,7 +59,7 @@ public class MainActivity extends MoviesActivity implements MovieItemClickListen
 
         String baseUrl = getString(R.string.moviedb_base_url);
         String apiKey = getString(R.string.moviedb_api_key);
-        daoFactory = new HttpDaoFactory(baseUrl, apiKey);
+        daoFactory = new BaseDaoFactory(baseUrl, apiKey, getContentResolver());
 
         layoutManager = new GridLayoutManager(this, NUM_COLUMNS_VERTICAL);
         mMoviesRecyclerViewAdapter = new MoviesRecyclerViewAdapter(getApplicationContext(), this);

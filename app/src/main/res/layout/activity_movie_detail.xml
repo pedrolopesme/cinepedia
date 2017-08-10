@@ -63,7 +63,8 @@
                     android:layout_marginBottom="5dp"
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:weightSum="1">
 
                     <!-- Release Date -->
                     <TextView
@@ -80,6 +81,16 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/colorTextDark"
                         android:textSize="15sp" />
+
+                    <ImageButton
+                        android:id="@+id/ib_favorite"
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
+                        android:layout_marginTop="15dp"
+                        android:background="@mipmap/ic_star_on"
+                        android:visibility="invisible"
+                        android:contentDescription="@string/favorite_button" />
+
                 </LinearLayout>
             </TableRow>
 
@@ -127,10 +138,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="25dp"
-                android:visibility="gone"
-                android:textAlignment="center"
                 android:text="@string/error_no_items"
-                android:textColor="@color/colorText" />
+                android:textAlignment="center"
+                android:textColor="@color/colorText"
+                android:visibility="gone" />
 
             <TableRow
                 android:layout_width="fill_parent"
@@ -169,10 +180,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="25dp"
-                android:visibility="gone"
-                android:textAlignment="center"
                 android:text="@string/error_no_items"
-                android:textColor="@color/colorText" />
+                android:textAlignment="center"
+                android:textColor="@color/colorText"
+                android:visibility="gone" />
 
             <TableRow
                 android:layout_width="fill_parent"

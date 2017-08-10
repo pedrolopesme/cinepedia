@@ -8,4 +8,6 @@ public interface DaoFactory {
 
     ReviewDao getReviewDao();
 
+    FavoriteDao getFavoriteDao();
+
 }

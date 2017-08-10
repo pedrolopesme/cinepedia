@@ -17,5 +17,6 @@
 
     <!-- MANIFEST STUFF -->
     <string name="content_authority">com.pedrolopesme.android.cinepedia</string>
+    <string name="favorite_button">Favorite</string>
 
 </resources>

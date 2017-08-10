@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface ReviewDao {
 
-    List<Review> get(int movieId);
+    List<Review> get(long movieId);
 
 }
