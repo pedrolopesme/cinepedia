@@ -6,14 +6,14 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import com.pedrolopesme.android.cinepedia.dao.FavoriteDao;
-import com.pedrolopesme.android.cinepedia.data.FavoritesContract;
 import com.pedrolopesme.android.cinepedia.domain.Movie;
 import com.pedrolopesme.android.cinepedia.utils.DateUtil;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import static com.pedrolopesme.android.cinepedia.data.FavoritesContract.*;
+import static com.pedrolopesme.android.cinepedia.data.FavoritesContract.FavoriteEntry;
 
 public final class ContentProviderFavoriteDao extends ContentProviderBaseDao implements FavoriteDao {
 
@@ -26,9 +26,15 @@ public final class ContentProviderFavoriteDao extends ContentProviderBaseDao imp
         ContentValues values = new ContentValues();
         values.put(FavoriteEntry._ID, movie.getId());
         values.put(FavoriteEntry.COLUMN_TITLE, movie.getTitle());
-        values.put(FavoriteEntry.COLUMN_SYNOPSIS, movie.getOverview());
-        values.put(FavoriteEntry.COLUMN_RELEASED_AT, DateUtil.convert(movie.getReleaseDate()));
-        values.put(FavoriteEntry.COLUMN_USER_RATING, movie.getVoteAverage());
+        values.put(FavoriteEntry.COLUMN_ORIGINAL_TITLE, movie.getOriginalTitle());
+        values.put(FavoriteEntry.COLUMN_ORIGINAL_LANGUAGE, movie.getOriginalLanguage());
+        values.put(FavoriteEntry.COLUMN_OVERVIEW, movie.getOverview());
+        values.put(FavoriteEntry.COLUMN_RELEASED_AT, DateUtil.encode(movie.getReleaseDate()));
+        values.put(FavoriteEntry.COLUMN_POPULARITY, movie.getPopularity());
+        values.put(FavoriteEntry.COLUMN_VOTE_COUNT, movie.getVoteCount());
+        values.put(FavoriteEntry.COLUMN_VOTE_AVERAGE, movie.getVoteAverage());
+        values.put(FavoriteEntry.COLUMN_VIDEO, movie.isVideo());
+        values.put(FavoriteEntry.COLUMN_ADULT, movie.isAdult());
         getContentResolver().insert(FavoriteEntry.CONTENT_URI, values);
     }
 
@@ -52,10 +58,29 @@ public final class ContentProviderFavoriteDao extends ContentProviderBaseDao imp
             while (cursor.moveToNext()) {
                 long id = cursor.getLong(cursor.getColumnIndex(FavoriteEntry._ID));
                 String title = cursor.getString(cursor.getColumnIndex(FavoriteEntry.COLUMN_TITLE));
+                String originalTitle = cursor.getString(cursor.getColumnIndex(FavoriteEntry.COLUMN_ORIGINAL_TITLE));
+                String originalLanguage = cursor.getString(cursor.getColumnIndex(FavoriteEntry.COLUMN_ORIGINAL_LANGUAGE));
+                String overview = cursor.getString(cursor.getColumnIndex(FavoriteEntry.COLUMN_OVERVIEW));
+                Date releaseAt = DateUtil.decode(cursor.getString(cursor.getColumnIndex(FavoriteEntry.COLUMN_RELEASED_AT)));
+                Double popularity = cursor.getDouble(cursor.getColumnIndex(FavoriteEntry.COLUMN_POPULARITY));
+                int voteCount = cursor.getInt(cursor.getColumnIndex(FavoriteEntry.COLUMN_VOTE_COUNT));
+                Double average = cursor.getDouble(cursor.getColumnIndex(FavoriteEntry.COLUMN_VOTE_AVERAGE));
+                boolean adult = Boolean.valueOf(cursor.getString(cursor.getColumnIndex(FavoriteEntry.COLUMN_ADULT)));
+                boolean video = Boolean.valueOf(cursor.getString(cursor.getColumnIndex(FavoriteEntry.COLUMN_VIDEO)));
 
                 Movie movie = new Movie();
-                movie.setTitle(title);
                 movie.setId(id);
+                movie.setTitle(title);
+                movie.setOriginalTitle(title);
+                movie.setOriginalTitle(originalTitle);
+                movie.setOriginalLanguage(originalLanguage);
+                movie.setOverview(overview);
+                movie.setReleaseDate(releaseAt);
+                movie.setPopularity(popularity);
+                movie.setVoteCount(voteCount);
+                movie.setVoteAverage(average);
+                movie.setAdult(adult);
+                movie.setVideo(video);
                 movies.add(movie);
             }
             cursor.close();

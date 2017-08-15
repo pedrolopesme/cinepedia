@@ -22,9 +22,15 @@ public final class FavoritesDBHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_WEATHER_TABLE =
                 "CREATE TABLE " + FavoriteEntry.TABLE_NAME + " (" +
                         FavoriteEntry._ID + " INTEGER PRIMARY KEY, " +
+                        FavoriteEntry.COLUMN_ORIGINAL_TITLE + " TEXT NOT NULL, " +
                         FavoriteEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
-                        FavoriteEntry.COLUMN_SYNOPSIS + " TEXT NOT NULL, " +
-                        FavoriteEntry.COLUMN_USER_RATING + " REAL, " +
+                        FavoriteEntry.COLUMN_ORIGINAL_LANGUAGE + " TEXT, " +
+                        FavoriteEntry.COLUMN_ADULT + " INT, " +
+                        FavoriteEntry.COLUMN_OVERVIEW + " TEXT NOT NULL, " +
+                        FavoriteEntry.COLUMN_POPULARITY + " REAL, " +
+                        FavoriteEntry.COLUMN_VOTE_AVERAGE + " REAL, " +
+                        FavoriteEntry.COLUMN_VOTE_COUNT + " INT, " +
+                        FavoriteEntry.COLUMN_VIDEO + " INT, " +
                         FavoriteEntry.COLUMN_RELEASED_AT + " INTEGER);";
 
         db.execSQL(SQL_CREATE_WEATHER_TABLE);
