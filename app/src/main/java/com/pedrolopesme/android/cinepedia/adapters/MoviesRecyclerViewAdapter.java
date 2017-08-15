@@ -110,13 +110,15 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
          * @param movie selected
          */
         void renderPoster(final Movie movie) {
-            Picasso.with(context)
-                    .load(movie.getPoster().getSmall())
-                    .fit()
-                    .centerCrop()
-                    .placeholder(R.drawable.ic_placeholder)
-                    .error(R.drawable.ic_error)
-                    .into(mMovieImage);
+            if (movie.getPoster() != null) {
+                Picasso.with(context)
+                        .load(movie.getPoster().getSmall())
+                        .fit()
+                        .centerCrop()
+                        .placeholder(R.drawable.ic_placeholder)
+                        .error(R.drawable.ic_error)
+                        .into(mMovieImage);
+            }
         }
     }
 

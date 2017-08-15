@@ -98,6 +98,10 @@ public class MainActivity extends MoviesActivity implements MovieItemClickListen
                 Log.d(LOG_TAG, "Sort top rated movies selected");
                 refreshMoviesTopRated();
                 return true;
+            case R.id.action_sort_favorites:
+                Log.d(LOG_TAG, "Sort favorite movies selected");
+                refreshMoviesFavorite();
+                return true;
             default:
                 Log.w(LOG_TAG, "None menu option was identified");
                 return super.onOptionsItemSelected(item);
@@ -151,6 +155,15 @@ public class MainActivity extends MoviesActivity implements MovieItemClickListen
         Log.d(LOG_TAG, "Refreshing movies grid with top rated");
         setTitle(R.string.main_menu_rated);
         new MoviesAsyncTask(this, daoFactory).execute(Sorting.TOP_RATED);
+    }
+
+    /**
+     * Triggers movies async task to get top favorite movies
+     */
+    private void refreshMoviesFavorite() {
+        Log.d(LOG_TAG, "Refreshing movies grid with favorites");
+        setTitle(R.string.main_menu_favorite);
+        new MoviesAsyncTask(this, daoFactory).execute(Sorting.FAVORITES);
     }
 
     /**

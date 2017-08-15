@@ -5,6 +5,6 @@ package com.pedrolopesme.android.cinepedia.domain;
  */
 public enum Sorting {
 
-    POPULAR, TOP_RATED
+    POPULAR, TOP_RATED, FAVORITES
 
 }

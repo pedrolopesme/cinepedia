@@ -24,6 +24,8 @@ public final class FavoritesDBHelper extends SQLiteOpenHelper {
                         FavoriteEntry._ID + " INTEGER PRIMARY KEY, " +
                         FavoriteEntry.COLUMN_ORIGINAL_TITLE + " TEXT NOT NULL, " +
                         FavoriteEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
+                        FavoriteEntry.COLUMN_POSTER_IMAGE + " TEXT NOT NULL, " +
+                        FavoriteEntry.COLUMN_BACKDROP_IMAGE + " TEXT NOT NULL, " +
                         FavoriteEntry.COLUMN_ORIGINAL_LANGUAGE + " TEXT, " +
                         FavoriteEntry.COLUMN_ADULT + " INT, " +
                         FavoriteEntry.COLUMN_OVERVIEW + " TEXT NOT NULL, " +

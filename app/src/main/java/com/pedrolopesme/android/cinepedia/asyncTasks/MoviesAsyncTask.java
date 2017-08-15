@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.pedrolopesme.android.cinepedia.R;
 import com.pedrolopesme.android.cinepedia.activities.MoviesActivity;
 import com.pedrolopesme.android.cinepedia.dao.DaoFactory;
+import com.pedrolopesme.android.cinepedia.dao.FavoriteDao;
 import com.pedrolopesme.android.cinepedia.dao.MoviesDao;
 import com.pedrolopesme.android.cinepedia.domain.Sorting;
 
@@ -26,9 +27,13 @@ public class MoviesAsyncTask extends AsyncTask<Sorting, Void, Boolean> {
     // Movies Dao
     private final MoviesDao moviesDao;
 
+    // Favorite Dao
+    private final FavoriteDao favoriteDao;
+
     public MoviesAsyncTask(MoviesActivity activity, DaoFactory daoFactory) {
         this.activity = activity;
         this.moviesDao = daoFactory.getMoviesDao();
+        this.favoriteDao = daoFactory.getFavoriteDao();
     }
 
     @Override
@@ -63,6 +68,10 @@ public class MoviesAsyncTask extends AsyncTask<Sorting, Void, Boolean> {
             case TOP_RATED:
                 Log.d(LOG_TAG, "Getting top rated movies");
                 activity.refreshMovies(moviesDao.getTopRated());
+                break;
+            case FAVORITES:
+                Log.d(LOG_TAG, "Getting favorite movies");
+                activity.refreshMovies(favoriteDao.getMovies());
                 break;
         }
     }

@@ -7,6 +7,7 @@ import android.net.Uri;
 
 import com.pedrolopesme.android.cinepedia.dao.FavoriteDao;
 import com.pedrolopesme.android.cinepedia.domain.Movie;
+import com.pedrolopesme.android.cinepedia.domain.MovieImage;
 import com.pedrolopesme.android.cinepedia.utils.DateUtil;
 
 import java.util.ArrayList;
@@ -35,6 +36,8 @@ public final class ContentProviderFavoriteDao extends ContentProviderBaseDao imp
         values.put(FavoriteEntry.COLUMN_VOTE_AVERAGE, movie.getVoteAverage());
         values.put(FavoriteEntry.COLUMN_VIDEO, movie.isVideo());
         values.put(FavoriteEntry.COLUMN_ADULT, movie.isAdult());
+        values.put(FavoriteEntry.COLUMN_POSTER_IMAGE, movie.getPosterImage().getPath());
+        values.put(FavoriteEntry.COLUMN_BACKDROP_IMAGE, movie.getBackdrop().getPath());
         getContentResolver().insert(FavoriteEntry.CONTENT_URI, values);
     }
 
@@ -60,6 +63,8 @@ public final class ContentProviderFavoriteDao extends ContentProviderBaseDao imp
                 String title = cursor.getString(cursor.getColumnIndex(FavoriteEntry.COLUMN_TITLE));
                 String originalTitle = cursor.getString(cursor.getColumnIndex(FavoriteEntry.COLUMN_ORIGINAL_TITLE));
                 String originalLanguage = cursor.getString(cursor.getColumnIndex(FavoriteEntry.COLUMN_ORIGINAL_LANGUAGE));
+                String backdropPath = cursor.getString(cursor.getColumnIndex(FavoriteEntry.COLUMN_BACKDROP_IMAGE));
+                String posterPath = cursor.getString(cursor.getColumnIndex(FavoriteEntry.COLUMN_POSTER_IMAGE));
                 String overview = cursor.getString(cursor.getColumnIndex(FavoriteEntry.COLUMN_OVERVIEW));
                 Date releaseAt = DateUtil.decode(cursor.getString(cursor.getColumnIndex(FavoriteEntry.COLUMN_RELEASED_AT)));
                 Double popularity = cursor.getDouble(cursor.getColumnIndex(FavoriteEntry.COLUMN_POPULARITY));
@@ -81,6 +86,8 @@ public final class ContentProviderFavoriteDao extends ContentProviderBaseDao imp
                 movie.setVoteAverage(average);
                 movie.setAdult(adult);
                 movie.setVideo(video);
+                movie.setPoster(new MovieImage(posterPath));
+                movie.setBackdrop(new MovieImage(backdropPath));
                 movies.add(movie);
             }
             cursor.close();

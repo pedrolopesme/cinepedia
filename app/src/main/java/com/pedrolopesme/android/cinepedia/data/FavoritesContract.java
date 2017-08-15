@@ -32,6 +32,8 @@ public final class FavoritesContract {
         public static final String COLUMN_VIDEO = "video";
         public static final String COLUMN_VOTE_AVERAGE = "voteAverage";
         public static final String COLUMN_RELEASED_AT = "releasedAt";
+        public static final String COLUMN_POSTER_IMAGE = "posterImage";
+        public static final String COLUMN_BACKDROP_IMAGE = "backdropImage";
 
         public static Uri buildUriWithId(long id) {
             return CONTENT_URI.buildUpon()

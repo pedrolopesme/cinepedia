@@ -160,12 +160,14 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerIte
             mMovieReleaseDateTextView.setText(DateUtil.format(movie.getReleaseDate(), "yyyy"));
             mMovieRatingTextView.setText(rating);
             mMovieSynopsisTextView.setText(movie.getOverview());
-            Picasso.with(getApplicationContext())
-                    .load(movie.getPoster().getSmall())
-                    .placeholder(R.drawable.ic_placeholder)
-                    .error(R.drawable.ic_error)
-                    .into(mMoviePosterTextView);
 
+            if (movie.getPoster() != null) {
+                Picasso.with(getApplicationContext())
+                        .load(movie.getPoster().getSmall())
+                        .placeholder(R.drawable.ic_placeholder)
+                        .error(R.drawable.ic_error)
+                        .into(mMoviePosterTextView);
+            }
             renderFavoriteIcon(movie);
         }
     }
@@ -236,6 +238,12 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerIte
     }
 
     public void refreshTrailers(final List<Trailer> trailers) {
+        if (trailers == null) {
+            Log.d(LOG_TAG, "No trailers has been found");
+            mTrailersNoItemsTextView.setVisibility(View.VISIBLE);
+            return;
+        }
+
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -256,6 +264,11 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerIte
     }
 
     public void refreshReviews(final List<Review> reviews) {
+        if (reviews == null) {
+            Log.d(LOG_TAG, "No reviews has been found");
+            mReviewNoItemsTextView.setVisibility(View.VISIBLE);
+            return;
+        }
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
