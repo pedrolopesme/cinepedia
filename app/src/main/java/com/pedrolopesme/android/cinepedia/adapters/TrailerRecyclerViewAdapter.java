@@ -17,8 +17,7 @@ import java.util.List;
 import butterknife.BindView;
 
 /**
- * Recycler View Adapter responsible to load new MoviesDao to the
- * main grid
+ * Recycler View Adapter responsible to load new Trailers
  */
 public class TrailerRecyclerViewAdapter extends RecyclerView.Adapter<TrailerRecyclerViewAdapter.TrailerViewHolder> {
 

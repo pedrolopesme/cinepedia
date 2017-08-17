@@ -4,12 +4,22 @@
     <!-- MENUS -->
     <string name="main_menu_popular">Pop Movies</string>
     <string name="main_menu_rated">Top Rated</string>
+    <string name="main_menu_favorite">Favorites</string>
+    <string name="share_menu_share">Share</string>
 
     <!-- ERRORS -->
     <string name="error_conectivity">Ops, your internet seems to be down :-(</string>
+    <string name="error_no_items">No items have been found</string>
 
     <!-- TITLES -->
     <string name="title_moviedetail">MovieDetail</string>
     <string name="trailers_title">Trailers:</string>
+    <string name="review_content_description">Review</string>
+    <string name="reviews_title">Reviews</string>
+
+    <!-- MANIFEST STUFF -->
+    <string name="content_authority">com.pedrolopesme.android.cinepedia</string>
+    <string name="favorite_button">Favorite</string>
+    <string name="share_trailer">Share Trailer</string>
 
 </resources>

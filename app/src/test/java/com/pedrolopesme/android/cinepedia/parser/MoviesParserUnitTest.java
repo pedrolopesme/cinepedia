@@ -89,7 +89,7 @@ public class MoviesParserUnitTest {
         assertEquals(expectedMovies.get(2), generatedList.get(2));
     }
 
-    private Movie generateMovie(int id, String name) {
+    private Movie generateMovie(long id, String name) {
         List<Integer> genreIds = new ArrayList<>();
         genreIds.add(1);
         genreIds.add(2);

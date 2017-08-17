@@ -37,4 +37,17 @@ public class DateUtil {
         return null;
     }
 
+    /**
+     * Converts a time to milis string representation
+     */
+    public static String encode(final Date dt){
+        return String.valueOf(dt.getTime());
+    }
+
+    /**
+     * Converts a string representation to time in milis
+     */
+    public static Date decode(final String dt){
+        return new Date(Long.valueOf(dt));
+    }
 }

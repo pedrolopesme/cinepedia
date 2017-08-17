@@ -30,6 +30,10 @@ public final class MovieImage implements Parcelable {
         this.path = path;
     }
 
+    public String getPath() {
+        return this.path;
+    }
+
     private String getResized(Sizes size) {
         return BASE_PATH + size.getSize() + "/" + path;
     }

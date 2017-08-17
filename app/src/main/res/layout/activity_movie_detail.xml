@@ -63,7 +63,8 @@
                     android:layout_marginBottom="5dp"
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:weightSum="1">
 
                     <!-- Release Date -->
                     <TextView
@@ -80,6 +81,16 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/colorTextDark"
                         android:textSize="15sp" />
+
+                    <ImageButton
+                        android:id="@+id/ib_favorite"
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
+                        android:layout_marginTop="15dp"
+                        android:background="@mipmap/ic_star_on"
+                        android:visibility="invisible"
+                        android:contentDescription="@string/favorite_button" />
+
                 </LinearLayout>
             </TableRow>
 
@@ -122,6 +133,16 @@
 
             </TableRow>
 
+            <TextView
+                android:id="@+id/tv_trailers_no_items"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="25dp"
+                android:text="@string/error_no_items"
+                android:textAlignment="center"
+                android:textColor="@color/colorText"
+                android:visibility="gone" />
+
             <TableRow
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -129,6 +150,48 @@
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rc_trailers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp" />
+            </TableRow>
+
+            <!-- Reviews -->
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:id="@+id/reviews_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:text="@string/reviews_title"
+                    android:textColor="@color/colorText"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+            </TableRow>
+
+            <TextView
+                android:id="@+id/tv_reviews_no_items"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="25dp"
+                android:text="@string/error_no_items"
+                android:textAlignment="center"
+                android:textColor="@color/colorText"
+                android:visibility="gone" />
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rc_reviews"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"

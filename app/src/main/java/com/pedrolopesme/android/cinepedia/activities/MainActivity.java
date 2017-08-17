@@ -17,7 +17,7 @@ import com.pedrolopesme.android.cinepedia.adapters.MoviesRecyclerViewAdapter;
 import com.pedrolopesme.android.cinepedia.asyncTasks.MoviesAsyncTask;
 import com.pedrolopesme.android.cinepedia.clickListeners.MovieItemClickListener;
 import com.pedrolopesme.android.cinepedia.dao.DaoFactory;
-import com.pedrolopesme.android.cinepedia.dao.http.HttpDaoFactory;
+import com.pedrolopesme.android.cinepedia.dao.BaseDaoFactory;
 import com.pedrolopesme.android.cinepedia.domain.Movie;
 import com.pedrolopesme.android.cinepedia.domain.Sorting;
 
@@ -59,7 +59,7 @@ public class MainActivity extends MoviesActivity implements MovieItemClickListen
 
         String baseUrl = getString(R.string.moviedb_base_url);
         String apiKey = getString(R.string.moviedb_api_key);
-        daoFactory = new HttpDaoFactory(baseUrl, apiKey);
+        daoFactory = new BaseDaoFactory(baseUrl, apiKey, getContentResolver());
 
         layoutManager = new GridLayoutManager(this, NUM_COLUMNS_VERTICAL);
         mMoviesRecyclerViewAdapter = new MoviesRecyclerViewAdapter(getApplicationContext(), this);
@@ -97,6 +97,10 @@ public class MainActivity extends MoviesActivity implements MovieItemClickListen
             case R.id.action_sort_rated:
                 Log.d(LOG_TAG, "Sort top rated movies selected");
                 refreshMoviesTopRated();
+                return true;
+            case R.id.action_sort_favorites:
+                Log.d(LOG_TAG, "Sort favorite movies selected");
+                refreshMoviesFavorite();
                 return true;
             default:
                 Log.w(LOG_TAG, "None menu option was identified");
@@ -151,6 +155,15 @@ public class MainActivity extends MoviesActivity implements MovieItemClickListen
         Log.d(LOG_TAG, "Refreshing movies grid with top rated");
         setTitle(R.string.main_menu_rated);
         new MoviesAsyncTask(this, daoFactory).execute(Sorting.TOP_RATED);
+    }
+
+    /**
+     * Triggers movies async task to get top favorite movies
+     */
+    private void refreshMoviesFavorite() {
+        Log.d(LOG_TAG, "Refreshing movies grid with favorites");
+        setTitle(R.string.main_menu_favorite);
+        new MoviesAsyncTask(this, daoFactory).execute(Sorting.FAVORITES);
     }
 
     /**

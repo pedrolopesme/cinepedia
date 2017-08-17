@@ -12,7 +12,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
-final class HttpMoviesDao extends HttpBaseDao implements MoviesDao {
+public final class HttpMoviesDao extends HttpBaseDao implements MoviesDao {
 
     private static final String LOG_TAG = HttpMoviesDao.class.getSimpleName();
 
@@ -28,7 +28,7 @@ final class HttpMoviesDao extends HttpBaseDao implements MoviesDao {
      * @param baseUrl url
      * @param apiKey  api key
      */
-    HttpMoviesDao(final String baseUrl, final String apiKey) {
+    public HttpMoviesDao(final String baseUrl, final String apiKey) {
         super(baseUrl, apiKey);
     }
 

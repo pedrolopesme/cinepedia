@@ -9,7 +9,7 @@ import java.util.List;
 
 public final class Movie implements Parcelable {
 
-    private int id;
+    private long id;
     private MovieImage posterImage;
     private boolean adult;
     private String overview;
@@ -24,11 +24,11 @@ public final class Movie implements Parcelable {
     private boolean video;
     private double voteAverage;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -149,7 +149,7 @@ public final class Movie implements Parcelable {
 
     @Override
     public int hashCode() {
-        return id;
+        return (int) (id ^ (id >>> 32));
     }
 
     public MovieImage getPosterImage() {
@@ -161,7 +161,6 @@ public final class Movie implements Parcelable {
     }
 
     // Parcelable things
-
     @Override
     public int describeContents() {
         return 0;
@@ -169,7 +168,7 @@ public final class Movie implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.id);
+        dest.writeLong(this.id);
         dest.writeParcelable(this.posterImage, flags);
         dest.writeByte(this.adult ? (byte) 1 : (byte) 0);
         dest.writeString(this.overview);
@@ -189,13 +188,13 @@ public final class Movie implements Parcelable {
     }
 
     protected Movie(Parcel in) {
-        this.id = in.readInt();
+        this.id = in.readLong();
         this.posterImage = in.readParcelable(MovieImage.class.getClassLoader());
         this.adult = in.readByte() != 0;
         this.overview = in.readString();
         long tmpReleaseDate = in.readLong();
         this.releaseDate = tmpReleaseDate == -1 ? null : new Date(tmpReleaseDate);
-        this.genreIds = new ArrayList<>();
+        this.genreIds = new ArrayList<Integer>();
         in.readList(this.genreIds, Integer.class.getClassLoader());
         this.originalTitle = in.readString();
         this.originalLanguage = in.readString();
@@ -207,7 +206,7 @@ public final class Movie implements Parcelable {
         this.voteAverage = in.readDouble();
     }
 
-    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
         @Override
         public Movie createFromParcel(Parcel source) {
             return new Movie(source);

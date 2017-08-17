@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Movie DB Json Parser
  */
-public class MoviesParser extends BaseParser {
+final public class MoviesParser extends BaseParser {
 
     private static final String LOG_TAG = MoviesParser.class.getSimpleName();
     static final String JSON_ROOT = "results";
@@ -70,7 +70,7 @@ public class MoviesParser extends BaseParser {
      static Movie parseMovie(final JSONObject json) {
         try {
             if (json != null && json.has(JSON_ID)) {
-                int id = json.getInt(JSON_ID);
+                long id = json.getLong(JSON_ID);
                 String posterPath = json.getString(JSON_POSTER_PATH);
                 boolean adult = json.getBoolean(JSON_ADULT);
                 String overview = json.getString(JSON_OVERVIEW);
