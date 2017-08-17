@@ -3,6 +3,7 @@ package com.pedrolopesme.android.cinepedia.activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,8 +25,8 @@ import com.pedrolopesme.android.cinepedia.asyncTasks.ReviewsAsyncTask;
 import com.pedrolopesme.android.cinepedia.asyncTasks.TrailersAsyncTask;
 import com.pedrolopesme.android.cinepedia.builders.TrailerUriBuilder;
 import com.pedrolopesme.android.cinepedia.clickListeners.TrailerItemClickListener;
-import com.pedrolopesme.android.cinepedia.dao.DaoFactory;
 import com.pedrolopesme.android.cinepedia.dao.BaseDaoFactory;
+import com.pedrolopesme.android.cinepedia.dao.DaoFactory;
 import com.pedrolopesme.android.cinepedia.dao.FavoriteDao;
 import com.pedrolopesme.android.cinepedia.domain.Movie;
 import com.pedrolopesme.android.cinepedia.domain.Review;
@@ -43,6 +44,9 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerIte
 
     // Log tag description
     private final static String LOG_TAG = MovieDetailActivity.class.getSimpleName();
+
+    // Lifecycle callbacks movie key
+    private static final String LIFECYCLE_CALLBACKS_MOVIE_KEY = "callbacksMovie";
 
     // DAO Factory
     private DaoFactory daoFactory;
@@ -130,7 +134,7 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerIte
         mReviewsRecyclerView.setNestedScrollingEnabled(false);
         mReviewsRecyclerView.setAdapter(mReviewRecyclerViewAdapter);
 
-        movie = getMovie();
+        movie = getMovie(savedInstanceState);
         renderActivity(movie);
         bindFavoriteCallback();
 
@@ -141,6 +145,12 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerIte
         new ReviewsAsyncTask(this, daoFactory).execute(movie);
 
         Log.d(LOG_TAG, "Movie Detail created successfully!");
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putParcelable(LIFECYCLE_CALLBACKS_MOVIE_KEY, movie);
     }
 
     /**
@@ -203,7 +213,6 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerIte
         mFavoriteImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Movie movie = getMovie();
                 final FavoriteDao favoriteDao = daoFactory.getFavoriteDao();
                 String message;
 
@@ -225,13 +234,20 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerIte
     /**
      * Extracts selected Movie from intent
      *
+     * @param savedInstanceState reference
      * @return Movie movie
      */
-    private Movie getMovie() {
-        Log.d(LOG_TAG, "Extracting movie from intent");
-        Intent intent = getIntent();
-        if (intent.hasExtra(Movie.class.getName())) {
-            return (Movie) intent.getParcelableExtra(Movie.class.getName());
+    private Movie getMovie(final Bundle savedInstanceState) {
+        if (savedInstanceState != null &&
+                savedInstanceState.containsKey(LIFECYCLE_CALLBACKS_MOVIE_KEY)) {
+            Log.d(LOG_TAG, "Extracting movie from savedInstanceBundle");
+            return (Movie) savedInstanceState.getParcelable(LIFECYCLE_CALLBACKS_MOVIE_KEY);
+        } else {
+            Log.d(LOG_TAG, "Extracting movie from intent");
+            Intent intent = getIntent();
+            if (intent.hasExtra(Movie.class.getName())) {
+                return (Movie) intent.getParcelableExtra(Movie.class.getName());
+            }
         }
         return null;
     }
