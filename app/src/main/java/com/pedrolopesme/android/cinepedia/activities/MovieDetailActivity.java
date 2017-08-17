@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -98,6 +99,10 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerIte
 
     private Toast toast;
 
+    private Movie movie;
+
+    private List<Trailer> trailers;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         Log.d(LOG_TAG, "Creating Movie Detail Activity!");
@@ -125,12 +130,16 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerIte
         mReviewsRecyclerView.setNestedScrollingEnabled(false);
         mReviewsRecyclerView.setAdapter(mReviewRecyclerViewAdapter);
 
-        final Movie movie = getMovie();
+        movie = getMovie();
         renderActivity(movie);
         bindFavoriteCallback();
 
-        refreshTrailers(movie);
-        refreshReviews(movie);
+        Log.d(LOG_TAG, "Refreshing trailers");
+        new TrailersAsyncTask(this, daoFactory).execute(movie);
+
+        Log.d(LOG_TAG, "Refreshing reviews ");
+        new ReviewsAsyncTask(this, daoFactory).execute(movie);
+
         Log.d(LOG_TAG, "Movie Detail created successfully!");
     }
 
@@ -196,26 +205,21 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerIte
             public void onClick(View v) {
                 final Movie movie = getMovie();
                 final FavoriteDao favoriteDao = daoFactory.getFavoriteDao();
-
                 String message;
-                if (favoriteDao.isFavorite(movie.getId())) {
-                    favoriteDao.delete(movie.getId());
-                    message = "Movie \"" + movie.getTitle() + "\" removed from favorites.";
-                } else {
-                    favoriteDao.insert(movie);
-                    message = "Movie \"" + movie.getTitle() + "\" added to favorites!";
+
+                if (movie != null) {
+                    if (favoriteDao.isFavorite(movie.getId())) {
+                        favoriteDao.delete(movie.getId());
+                        message = "Movie \"" + movie.getTitle() + "\" removed from favorites.";
+                    } else {
+                        favoriteDao.insert(movie);
+                        message = "Movie \"" + movie.getTitle() + "\" added to favorites!";
+                    }
+                    renderFavoriteIcon(movie);
+                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
                 }
-                renderFavoriteIcon(movie);
-                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
             }
         });
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(LOG_TAG, "Closing activity");
-        finish();
-        return true;
     }
 
     /**
@@ -232,17 +236,46 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerIte
         return null;
     }
 
-    public void refreshTrailers(Movie movie) {
-        Log.d(LOG_TAG, "Refreshing trailers");
-        new TrailersAsyncTask(this, daoFactory).execute(movie);
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        getMenuInflater().inflate(R.menu.share_menu, menu);
+        Log.d(LOG_TAG, "Share menu inflated successfully!");
+        return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        if (item == null) {
+            Log.d(LOG_TAG, "NULL item selected");
+            return super.onOptionsItemSelected(null);
+        }
+
+        switch (item.getItemId()) {
+            case R.id.action_share:
+                Log.d(LOG_TAG, "Sharing movie trailer");
+                shareMovieTrailer();
+                break;
+            default:
+                Log.d(LOG_TAG, "Closing activity");
+                finish();
+                break;
+        }
+        return true;
+    }
+
+    /**
+     * Refreshs the UI with the movie's trailers
+     *
+     * @param trailers list
+     */
     public void refreshTrailers(final List<Trailer> trailers) {
         if (trailers == null) {
             Log.d(LOG_TAG, "No trailers has been found");
             mTrailersNoItemsTextView.setVisibility(View.VISIBLE);
             return;
         }
+
+        this.trailers = trailers;
 
         this.runOnUiThread(new Runnable() {
             @Override
@@ -258,11 +291,11 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerIte
         });
     }
 
-    public void refreshReviews(Movie movie) {
-        Log.d(LOG_TAG, "Refreshing reviews ");
-        new ReviewsAsyncTask(this, daoFactory).execute(movie);
-    }
-
+    /**
+     * Refreshs the UI with the movie's reviews
+     *
+     * @param reviews list
+     */
     public void refreshReviews(final List<Review> reviews) {
         if (reviews == null) {
             Log.d(LOG_TAG, "No reviews has been found");
@@ -302,6 +335,25 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerIte
         if (trailerLink != null) {
             Intent intent = new Intent(Intent.ACTION_VIEW, trailerLink);
             startActivity(intent);
+        }
+    }
+
+    /**
+     * Share the first movie trailer
+     */
+    public void shareMovieTrailer() {
+        if (trailers != null && trailers.size() > 0) {
+            Trailer trailer = trailers.get(0);
+            Uri trailerLink = TrailerUriBuilder.build(trailer);
+            String shareBody = movie.getTitle() + " - " + trailerLink.toString();
+            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+
+            sharingIntent.setType("text/plain");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, movie.getTitle());
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+            startActivity(Intent.createChooser(sharingIntent, getString(R.string.share_trailer)));
+        } else {
+            Toast.makeText(getApplicationContext(), "This movie has no trailers to share", Toast.LENGTH_LONG).show();
         }
     }
 }
